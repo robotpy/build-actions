@@ -41,7 +41,7 @@ async function run() {
     }
 }
 
-
+run();
 
 /***/ }),
 
