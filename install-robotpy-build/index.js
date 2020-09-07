@@ -4,6 +4,7 @@ const exec = require('@actions/exec');
 const toml = require('toml');
 
 async function run() {
+
     // read toml file
     try {
         const tomlString = await fs.readFile("pyproject.toml");
@@ -26,6 +27,8 @@ async function run() {
             core.setFailed("could not find robotpy-build in build dependencies");
             return;
         }
+
+        core.info("[install-robotpy-build] robotpy-build dependency found: " + dep);
 
         // Run the installation
         await exec.exec("python", ["-m", "pip", "install", dep]);

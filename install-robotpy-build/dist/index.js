@@ -11,6 +11,7 @@ const exec = __webpack_require__(514);
 const toml = __webpack_require__(920);
 
 async function run() {
+
     // read toml file
     try {
         const tomlString = await fs.readFile("pyproject.toml");
@@ -34,6 +35,8 @@ async function run() {
             return;
         }
 
+        core.info("[install-robotpy-build] robotpy-build dependency found: " + dep);
+
         // Run the installation
         await exec.exec("python", ["-m", "pip", "install", dep]);
     } catch (error) {
@@ -42,6 +45,7 @@ async function run() {
 }
 
 run();
+
 
 /***/ }),
 
