@@ -1,0 +1,7 @@
+name: build-sdist
+description: "Builds source distribution"
+runs:
+  using: composite
+  steps:
+  - shell: bash
+    run: python setup.py sdist

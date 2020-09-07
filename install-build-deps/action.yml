@@ -1,0 +1,8 @@
+name: "install-build-deps"
+description: "Install build dependencies"
+runs:
+  using: "composite"
+  steps:
+  - shell: bash
+    run: |
+      python -m robotpy_build build-dep --install --find-links https://www.tortall.net/~robotpy/wheels/2020/linux_x86_64
