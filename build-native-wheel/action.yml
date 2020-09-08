@@ -1,10 +1,16 @@
 name: build-native-wheel
 description: "Builds wheel natively"
+inputs:
+  python:
+    description: "python executable"
+    required: false
+    default: python
 runs:
   using: composite
   steps:
   - shell: bash
-    run: python setup.py bdist_wheel
+    run: |
+      ${{ inputs.python }} setup.py bdist_wheel
     env:
       RPYBUILD_PARALLEL: 1
       RPYBUILD_STRIP_LIBPYTHON: 1

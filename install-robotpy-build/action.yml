@@ -1,5 +1,10 @@
 name: "install-robotpy-build"
 description: "Installs robotpy-build"
+inputs:
+  python:
+    description: "python executable"
+    required: false
+    default: python
 runs:
   using: "node12"
   main: dist/index.js

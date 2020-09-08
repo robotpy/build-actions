@@ -14,6 +14,7 @@ async function run() {
 
     // read toml file
     try {
+        const pythonPath = core.getInput("python");
         const tomlString = await fs.readFile("pyproject.toml");
         const data = toml.parse(tomlString);
         
@@ -38,7 +39,7 @@ async function run() {
         core.info("[install-robotpy-build] robotpy-build dependency found: " + dep);
 
         // Run the installation
-        await exec.exec("python", ["-m", "pip", "install", dep]);
+        await exec.exec(pythonPath, ["-m", "pip", "install", dep]);
     } catch (error) {
         core.setFailed(error.message);
     }
