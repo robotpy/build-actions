@@ -32,7 +32,7 @@ async function run() {
         core.info("[install-robotpy-build] robotpy-build dependency found: " + dep);
 
         // Run the installation
-        await exec.exec(pythonPath, ["-m", "pip", "install", dep]);
+        await exec.exec(pythonPath, ["-m", "pip", "--disable-pip-version-check", "install", dep]);
     } catch (error) {
         core.setFailed(error.message);
     }
