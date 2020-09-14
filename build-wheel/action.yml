@@ -1,5 +1,5 @@
-name: build-native-wheel
-description: "Builds wheel natively"
+name: build-wheel
+description: "Builds wheel"
 inputs:
   python:
     description: "python executable"
