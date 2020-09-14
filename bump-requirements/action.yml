@@ -1,0 +1,25 @@
+name: "bump-requirements"
+description: "Bumps dependencies in all requirements files and pushes the updated files"
+inputs:
+  pkgname:
+    description: "Package name"
+    required: true
+  pkgver:
+    description: "Package version"
+    required: true
+runs:
+  using: "composite"
+  steps:
+  - shell: bash
+    run: |
+      python -m pip --disable-pip-version-check install packaging
+  - shell: bash
+    run: |
+      python '${{ github.action_path }}/update_requirements.py' '${{ inputs.pkgname }}' '${{ inputs.pkgver }}' '$(git describe --tags)'
+  - shell: bash
+    run: |
+      git config --local user.email "action@github.com"
+      git config --local user.name "Github Action"
+      git add *requirements.txt
+      git commit -m "Bump '${{ inputs.pkgname }}' dependency"
+      git push
