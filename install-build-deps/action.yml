@@ -5,9 +5,14 @@ inputs:
     description: "python executable"
     required: false
     default: python
+  wheeldir:
+    description: "Wheel directory"
+    required: false
+    default: linux_x86_64
 runs:
   using: "composite"
   steps:
   - shell: bash
     run: |
-      ${{ inputs.python }} -m robotpy_build build-dep --install --find-links https://www.tortall.net/~robotpy/wheels/2020/linux_x86_64
+      ${{ inputs.python }} -m robotpy_build build-dep --install \
+        --find-links https://www.tortall.net/~robotpy/wheels/2020/${{ inputs.wheeldir }}
