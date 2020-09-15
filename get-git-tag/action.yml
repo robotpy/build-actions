@@ -1,0 +1,15 @@
+name: get-git-tag
+description: "Retrieves the git tag from the current ref"
+outputs:
+  tag:
+    description: Git tag
+    value: ${{ steps.currtag.outputs.tag }}
+runs:
+  using: composite
+  steps:
+  - shell: bash
+    id: currtag
+    run: |
+      export CURR_TAG=`awk -F'/' '{ print $NF }' <<< ${{ github.event.ref }}`
+      echo "::set-output name=tag::$CURR_TAG"
+      echo "Version Found: $CURR_TAG"
