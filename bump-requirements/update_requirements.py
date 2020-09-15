@@ -80,7 +80,7 @@ def main() -> int:
 
         req.specifier = SpecifierSet(",".join(new_specs))
 
-        new_requirement = str(req)
+        new_requirement = f"{req}\n"
         print(f"-> {req_fname}: Updated requirement: {new_requirement}")
         file_data[lineno] = new_requirement
 
