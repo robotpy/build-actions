@@ -15,7 +15,7 @@ runs:
       python -m pip --disable-pip-version-check install packaging
   - shell: bash
     run: |
-      python '${{ github.action_path }}/update_requirements.py' '${{ inputs.pkgname }}' '${{ inputs.pkgver }}' '$(git describe --tags)'
+      python '${{ github.action_path }}/update_requirements.py' '${{ inputs.pkgname }}' '${{ inputs.pkgver }}' "$(git describe --tags)"
   - shell: bash
     run: |
       git config --local user.email "action@github.com"
