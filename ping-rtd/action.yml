@@ -1,0 +1,13 @@
+name: ping-rtd
+description: "Pings RTD via the specified webhook"
+inputs:
+  token:
+    description: RTD token
+    required: true
+  webhook:
+    description: RTD webhook URL
+    required: true
+runs:
+  using: docker
+  image: Dockerfile
+  args: -X POST -d "token=${{ inputs.token }}" ${{ inputs.webhook }}
