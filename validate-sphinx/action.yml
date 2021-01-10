@@ -1,0 +1,14 @@
+name: "validate-sphinx"
+description: "Validate sphinx documentation"
+inputs:
+  docsdir:
+    description: "Documentation directory"
+    required: false
+    default: docs
+runs:
+  using: "composite"
+  steps:
+  - name: Install documentation dependencies
+    run: pip --disable-pip-version-check install -r ${ inputs.docsdir }}/requirements.txt
+  - name: Validate sphinx documentation
+    run: cd ${ inputs.docsdir }} && make clean html SPHINXOPTS="-W --keep-going"
