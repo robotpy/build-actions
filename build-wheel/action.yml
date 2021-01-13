@@ -15,3 +15,8 @@ runs:
       RPYBUILD_PARALLEL: 1
       RPYBUILD_STRIP_LIBPYTHON: 1
       MACOSX_DEPLOYMENT_TARGET: 10.14
+  - shell: bash
+    run: |
+      ORIG_PLAT_TAG="linux_x86_64"
+      MANYLINUX_TAG="manylinux_2_27_x86_64"
+      for x in $(find ./dist -name *$ORIG_PLAT_TAG.whl); do mv $x ${x%$ORIG_PLAT_TAG.whl}$MANYLINUX_TAG.whl;done
