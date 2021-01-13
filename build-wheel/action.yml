@@ -14,3 +14,9 @@ runs:
     env:
       RPYBUILD_PARALLEL: 1
       RPYBUILD_STRIP_LIBPYTHON: 1
+  - shell: bash
+    if: runner.os == 'Linux'
+    run: |
+      ORIG_PLAT_TAG="linux_x86_64"
+      MANYLINUX_TAG="manylinux_2_27"
+      for x in $(find ./dist -name *$ORIG_PLAT_TAG.whl); do mv $x ${x%$ORIG_PLAT_TAG.whl}$MANYLINUX_TAG.whl;done
