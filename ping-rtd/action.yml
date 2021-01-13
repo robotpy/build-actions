@@ -10,4 +10,5 @@ inputs:
 runs:
   using: docker
   image: Dockerfile
-  args: -X POST -d "token=${{ inputs.token }}" ${{ inputs.webhook }}
+  args:
+  - -X POST -d "token=${{ inputs.token }}" ${{ inputs.webhook }}
