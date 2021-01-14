@@ -53,7 +53,7 @@ async function run() {
         }
         
         core.info("maven_lib_downloads found:");
-        core.info(mavenLibDownloads);
+        // core.info(mavenLibDownloads);
 
         var outOfDates = [];
 
