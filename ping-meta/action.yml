@@ -1,0 +1,9 @@
+name: ping-meta
+description: "Pings the robotpy-meta repository"
+inputs:
+  token:
+    description: "Github repo access token"
+    required: true
+runs:
+  using: "node12"
+  main: dist/index.js
