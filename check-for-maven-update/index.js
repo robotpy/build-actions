@@ -46,7 +46,7 @@ async function run() {
         }
         
         core.info("maven_lib_downloads found:");
-        // core.info(mavenLibDownloads);
+        core.info(JSON.stringify(mavenLibDownloads));
 
         var outOfDates = [];
 
@@ -78,7 +78,7 @@ async function run() {
         outOfDates.sort((a, b) => a["artifact"].localeCompare(b["artifact"]));
 
         core.info("updates found:");
-        core.info(outOfDates);
+        core.info(JSON.stringify(outOfDates));
 
         const issueTitle = "[nag] Update Maven Dependencies";
         const issueBody = outOfDates.reduce( (out, ood) =>
