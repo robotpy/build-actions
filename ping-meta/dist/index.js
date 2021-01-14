@@ -13,14 +13,17 @@ const toml = __nccwpck_require__(892);
 async function run() {
     try {
         const token = core.getInput('token');
-        const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 
+        const context = github.context;
         const octokit = github.getOctokit(token);
         
+        let tag = context.ref.substring('refs/tags/'.length);
+
         let packageName;
         await octokit.repos.getContent({
-            owner: owner, // should be 'robotpy'
-            repo: repo,
+            owner: context.repo.owner, // should be 'robotpy'
+            repo: context.repo.repo,
+            ref: tag,
             path: 'pyproject.toml'
         }).then(result => {
             // content will be base64 encoded
@@ -29,19 +32,11 @@ async function run() {
             packageName = data["tool"]["robotpy-build"]["metadata"]["name"];
         })
 
-        let packageVersion;
-        await octokit.repos.listTags({
-            owner: owner, // should be 'robotpy'
-            repo: repo
-        }).then(result => {
-            packageVersion = result.data[0]["name"];
-        });
-
         await octokit.repos.createDispatchEvent({
             owner: 'robotpy',
             repo: 'robotpy-meta',
             event_type: 'tag',
-            client_payload: {'package_name': packageName, 'package_version': packageVersion}
+            client_payload: {'package_name': packageName, 'package_version': tag}
         });
 
     } catch(error) {
