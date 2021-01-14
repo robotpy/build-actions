@@ -6,15 +6,13 @@ const toml = require('toml');
 async function run() {
     try {
         const token = core.getInput('token');
-        const version = core.getInput('version');
         const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 
-        let packageName;
-
         const octokit = github.getOctokit(token);
-
+        
+        let packageName;
         await octokit.repos.getContent({
-            owner: owner,
+            owner: owner, // should be 'robotpy'
             repo: repo,
             path: 'pyproject.toml'
         }).then(result => {
@@ -24,11 +22,19 @@ async function run() {
             packageName = data["tool"]["robotpy-build"]["metadata"]["name"];
         })
 
+        let packageVersion;
+        await octokit.repos.listTags({
+            owner: owner, // should be 'robotpy'
+            repo: repo
+        }).then(result => {
+            packageVersion = result.data[0]["name"];
+        });
+
         await octokit.repos.createDispatchEvent({
             owner: 'robotpy',
             repo: 'robotpy-meta',
             event_type: 'tag',
-            client_payload: {'package_name': packageName, 'package_version': version}
+            client_payload: {'package_name': packageName, 'package_version': packageVersion}
         });
 
     } catch(error) {

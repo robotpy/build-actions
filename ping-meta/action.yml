@@ -4,9 +4,6 @@ inputs:
   token:
     description: "Github repo access token"
     required: true
-  version:
-    description: "New version to ping"
-    required: true
 runs:
   using: "node12"
   main: dist/index.js
