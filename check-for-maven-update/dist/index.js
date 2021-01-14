@@ -5,7 +5,6 @@ module.exports =
 /***/ 5118:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const fs = __nccwpck_require__(5747).promises;
 const core = __nccwpck_require__(2552);
 const github = __nccwpck_require__(1416);
 const toml = __nccwpck_require__(9892);
@@ -15,15 +14,25 @@ const compareVersions = __nccwpck_require__(394);
 
 async function run() {
     const githubToken = core.getInput('token');
+    const context = github.context;
     const ocktokit = github.getOctokit(githubToken);
 
     try {
-        const tomlString = await fs.readFile("pyproject.toml");
-        const data = toml.parse(tomlString);
+
+        let rpybuild;
+        await octokit.repos.getContent({
+            owner: context.repo.owner, // should be 'robotpy'
+            repo: context.repo.repo,
+            ref: context.ref,
+            path: 'pyproject.toml'
+        }).then(result => {
+            // content will be base64 encoded
+            const tomlString = Buffer.from(result.data.content, 'base64').toString();
+            const data = toml.parse(tomlString);
+            rpybuild = data["tool"]["robotpy-build"];
+        })
         
         let mavenLibDownloads = [];
-        
-        let rpybuild = data["tool"]["robotpy-build"];
         
         if (rpybuild["wrappers"]){
             for (const [key, value] of Object.entries(rpybuild["wrappers"])) {
@@ -100,7 +109,8 @@ async function run() {
                 // update existing issue instead creating a new one
                 try {
                     const issue = await ocktokit.issues.update({
-                        repo: process.env.GITHUB_REPOSITORY,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
                         issue_number: existingIssue.number,
                         body: issueBody
                     });
@@ -113,7 +123,8 @@ async function run() {
             // create a new issue
             try {
                 const issue = await ocktokit.issues.create({
-                    repo: process.env.GITHUB_REPOSITORY,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
                     title: issueTitle,
                     body: issueBody
                 });  

@@ -1,4 +1,3 @@
-const fs = require('fs').promises;
 const core = require('@actions/core');
 const github = require('@actions/github');
 const toml = require('toml');
@@ -8,15 +7,25 @@ const compareVersions = require('compare-versions');
 
 async function run() {
     const githubToken = core.getInput('token');
+    const context = github.context;
     const ocktokit = github.getOctokit(githubToken);
 
     try {
-        const tomlString = await fs.readFile("pyproject.toml");
-        const data = toml.parse(tomlString);
+
+        let rpybuild;
+        await octokit.repos.getContent({
+            owner: context.repo.owner, // should be 'robotpy'
+            repo: context.repo.repo,
+            ref: context.ref,
+            path: 'pyproject.toml'
+        }).then(result => {
+            // content will be base64 encoded
+            const tomlString = Buffer.from(result.data.content, 'base64').toString();
+            const data = toml.parse(tomlString);
+            rpybuild = data["tool"]["robotpy-build"];
+        })
         
         let mavenLibDownloads = [];
-        
-        let rpybuild = data["tool"]["robotpy-build"];
         
         if (rpybuild["wrappers"]){
             for (const [key, value] of Object.entries(rpybuild["wrappers"])) {
@@ -93,7 +102,8 @@ async function run() {
                 // update existing issue instead creating a new one
                 try {
                     const issue = await ocktokit.issues.update({
-                        repo: process.env.GITHUB_REPOSITORY,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
                         issue_number: existingIssue.number,
                         body: issueBody
                     });
@@ -106,7 +116,8 @@ async function run() {
             // create a new issue
             try {
                 const issue = await ocktokit.issues.create({
-                    repo: process.env.GITHUB_REPOSITORY,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
                     title: issueTitle,
                     body: issueBody
                 });  
