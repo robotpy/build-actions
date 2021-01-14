@@ -98,8 +98,10 @@ async function run() {
         }
         
         if (existingIssue) {
+            core.info("Existing issue found.");
             if (existingIssue.body !== issueBody){
                 // update existing issue instead creating a new one
+                core.info("Updating existing issue.");
                 try {
                     const issue = await octokit.issues.update({
                         owner: context.repo.owner,
@@ -111,9 +113,12 @@ async function run() {
                     core.error("Issue update failed!");
                     core.setFailed(error.message);
                 }
+            } else {
+                core.info("No change. Existing issue is up-to-date.");
             }
         } else {
             // create a new issue
+            core.info("Creating new issue.");
             try {
                 const issue = await octokit.issues.create({
                     owner: context.repo.owner,
