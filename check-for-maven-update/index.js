@@ -8,7 +8,7 @@ const compareVersions = require('compare-versions');
 async function run() {
     const githubToken = core.getInput('token');
     const context = github.context;
-    const ocktokit = github.getOctokit(githubToken);
+    const octokit = github.getOctokit(githubToken);
 
     try {
 
@@ -88,7 +88,7 @@ async function run() {
         let existingIssue;
         // refer https://github.com/JasonEtco/create-an-issue/blob/main/src/action.ts
         try {
-            const existingIssues = await ocktokit.search.issuesAndPullRequests({
+            const existingIssues = await octokit.search.issuesAndPullRequests({
                 q: `is:open is:issue repo:${process.env.GITHUB_REPOSITORY} in:title ${issueTitle}`
             });
             existingIssue = existingIssues.data.items.find(issue => issue.title === issueTitle);
@@ -101,7 +101,7 @@ async function run() {
             if (existingIssue.body !== issueBody){
                 // update existing issue instead creating a new one
                 try {
-                    const issue = await ocktokit.issues.update({
+                    const issue = await octokit.issues.update({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
                         issue_number: existingIssue.number,
@@ -115,7 +115,7 @@ async function run() {
         } else {
             // create a new issue
             try {
-                const issue = await ocktokit.issues.create({
+                const issue = await octokit.issues.create({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     title: issueTitle,
