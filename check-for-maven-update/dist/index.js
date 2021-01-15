@@ -82,6 +82,11 @@ async function run() {
 
         }
 
+        if (outOfDates.length == 0) {
+            core.info("no updates found.");
+            return;
+        }
+
         outOfDates.sort((a, b) => a["artifact"].localeCompare(b["artifact"]));
 
         core.info("updates found:");
