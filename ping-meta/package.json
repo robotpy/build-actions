@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "ncc build index.js -o dist"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,10 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
+    "ini": "^2.0.0",
     "toml": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.27.0"
   }
 }

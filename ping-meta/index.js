@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const ini = require('ini');
 const toml = require('toml');
 
 // ref https://github.com/peter-evans/repository-dispatch/blob/master/src/main.ts
@@ -13,18 +14,33 @@ async function run() {
         let tag = context.ref.substring('refs/tags/'.length);
 
         let packageName;
-        await octokit.repos.getContent({
-            owner: context.repo.owner, // should be 'robotpy'
-            repo: context.repo.repo,
-            ref: tag,
-            path: 'pyproject.toml'
-        }).then(result => {
-            // content will be base64 encoded
-            const tomlString = Buffer.from(result.data.content, 'base64').toString();
-            const data = toml.parse(tomlString);
-            packageName = data["tool"]["robotpy-build"]["metadata"]["name"];
-        })
 
+        try {
+            await octokit.repos.getContent({
+                owner: context.repo.owner, // should be 'robotpy'
+                repo: context.repo.repo,
+                ref: tag,
+                path: 'pyproject.toml'
+            }).then(result => {
+                // content will be base64 encoded
+                const tomlString = Buffer.from(result.data.content, 'base64').toString();
+                const data = toml.parse(tomlString);
+                packageName = data["tool"]["robotpy-build"]["metadata"]["name"];
+            });
+        } catch (err) {
+            await octokit.repos.getContent({
+                owner: context.repo.owner, // should be 'robotpy'
+                repo: context.repo.repo,
+                ref: tag,
+                path: 'setup.cfg'
+            }).then(result => {
+                // content will be base64 encoded
+                const cfgString = Buffer.from(result.data.content, 'base64').toString();
+                const data = ini.parse(cfgString);
+                packageName = data.metadata.name;
+            });
+        }
+        
         await octokit.repos.createDispatchEvent({
             owner: 'robotpy',
             repo: 'robotpy-meta',
