@@ -1,0 +1,17 @@
+name: "install-pure-build-deps"
+description: "Install build dependencies"
+inputs:
+  python:
+    description: "python executable"
+    required: false
+    default: python
+  wheeldir:
+    description: "Wheel directory"
+    required: false
+    default: linux_x86_64
+runs:
+  using: "composite"
+  steps:
+  - shell: bash
+    run: |
+      ${{ inputs.python }} -m pip install wheel
