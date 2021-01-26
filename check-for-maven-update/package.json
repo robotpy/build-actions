@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "dist": "ncc build index.js -o dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,5 +19,8 @@
     "object-scan": "^13.8.0",
     "toml": "^3.0.0",
     "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.27.0"
   }
 }
