@@ -1,0 +1,26 @@
+{
+  "name": "check-for-maven-update",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dist": "ncc build index.js -o dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "compare-versions": "^3.6.0",
+    "node-fetch": "^2.6.1",
+    "object-scan": "^13.8.0",
+    "toml": "^3.0.0",
+    "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.27.0"
+  }
+}

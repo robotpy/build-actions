@@ -1,0 +1,9 @@
+name: check-for-maven-update
+description: "Check for new version of libraries on maven"
+inputs:
+  token:
+    description: "github token"
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
