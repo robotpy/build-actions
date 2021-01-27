@@ -27,6 +27,9 @@ async function run() {
         return;
 
     const tag = context.ref.slice('refs/tags/'.length);
+    // Skip prerelease tags.
+    if (!/^\d+(?:\.\d+)*$/.test(tag))
+        return;
 
     const token = core.getInput('token');
     const octokit = github.getOctokit(token);
