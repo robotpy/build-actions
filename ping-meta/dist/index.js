@@ -10,44 +10,40 @@ const github = __nccwpck_require__(438);
 const ini = __nccwpck_require__(885);
 const toml = __nccwpck_require__(920);
 
+function getPlainFile(octokit, repo, ref, path) {
+    return octokit.repos.getContent({
+        owner: repo.owner, // should be 'robotpy'
+        repo: repo.repo,
+        ref,
+        path,
+    }).then(result => Buffer.from(result.data.content, 'base64').toString());
+}
+
+function getPackageMetadata(octokit, repo, ref) {
+    return getPlainFile(octokit, repo, 'pyproject.toml')
+        .then(result => result.tool['robotpy-build'].metadata)
+        .catch(() => getPlainFile(octokit, repo, 'setup.cfg')
+                    .then(result => result.metadata));
+}
+
 // ref https://github.com/peter-evans/repository-dispatch/blob/master/src/main.ts
 async function run() {
+    const context = github.context;
+
+    if (!context.ref.startsWith('refs/tags/'))
+        return;
+
+    const tag = context.ref.slice('refs/tags/'.length);
+    // Skip prerelease tags.
+    if (!/^\d+(?:\.\d+)*$/.test(tag))
+        return;
+
+    const token = core.getInput('token');
+    const octokit = github.getOctokit(token);
+
     try {
-        const token = core.getInput('token');
+        const packageName = await getPackageMetadata(octokit, context.repo, ref).name;
 
-        const context = github.context;
-        const octokit = github.getOctokit(token);
-        
-        let tag = context.ref.substring('refs/tags/'.length);
-
-        let packageName;
-
-        try {
-            await octokit.repos.getContent({
-                owner: context.repo.owner, // should be 'robotpy'
-                repo: context.repo.repo,
-                ref: tag,
-                path: 'pyproject.toml'
-            }).then(result => {
-                // content will be base64 encoded
-                const tomlString = Buffer.from(result.data.content, 'base64').toString();
-                const data = toml.parse(tomlString);
-                packageName = data["tool"]["robotpy-build"]["metadata"]["name"];
-            });
-        } catch (err) {
-            await octokit.repos.getContent({
-                owner: context.repo.owner, // should be 'robotpy'
-                repo: context.repo.repo,
-                ref: tag,
-                path: 'setup.cfg'
-            }).then(result => {
-                // content will be base64 encoded
-                const cfgString = Buffer.from(result.data.content, 'base64').toString();
-                const data = ini.parse(cfgString);
-                packageName = data.metadata.name;
-            });
-        }
-        
         await octokit.repos.createDispatchEvent({
             owner: 'robotpy',
             repo: 'robotpy-meta',
@@ -62,6 +58,7 @@ async function run() {
 }
 
 run()
+
 
 /***/ }),
 
