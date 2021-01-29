@@ -42,7 +42,7 @@ async function run() {
     const octokit = github.getOctokit(token);
 
     try {
-        const packageName = await getPackageMetadata(octokit, context.repo, ref).name;
+        const packageName = await getPackageMetadata(octokit, context.repo, tag).name;
 
         await octokit.repos.createDispatchEvent({
             owner: 'robotpy',
