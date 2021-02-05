@@ -22,7 +22,7 @@ function getPlainFile(octokit, repo, ref, path) {
 function getPackageName(octokit, repo, ref) {
     return getPlainFile(octokit, repo, ref, 'pyproject.toml')
         .then(result => result.tool['robotpy-build'].metadata.name)
-        .catch(() => getPlainFile(octokit, repo, 'setup.cfg')
+        .catch(() => getPlainFile(octokit, repo, ref, 'setup.cfg')
                     .then(result => result.metadata.name));
 }
 
