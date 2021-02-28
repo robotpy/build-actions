@@ -5,6 +5,10 @@ inputs:
     description: "Documentation directory"
     required: false
     default: docs
+  sphinxopts:
+    description: "Options to pass to sphinx"
+    required: false
+    default: "-W --keep-going"
 runs:
   using: "composite"
   steps:
@@ -13,4 +17,4 @@ runs:
     run: pip --disable-pip-version-check install -r ${{ inputs.docsdir }}/requirements.txt
   - name: Validate sphinx documentation
     shell: bash
-    run: cd ${{ inputs.docsdir }} && make clean html SPHINXOPTS="-W --keep-going"
+    run: cd ${{ inputs.docsdir }} && make clean html SPHINXOPTS="${{ inputs.sphinxopts }}"
