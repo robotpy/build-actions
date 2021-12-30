@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e
+
 # Safeguard in case this accidentally runs on Windows or macOS.
 if [ "$RUNNER_OS" != "Linux" ]; then
 	echo "On $RUNNER_OS, doing nothing."
