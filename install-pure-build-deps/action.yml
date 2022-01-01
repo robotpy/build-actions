@@ -16,6 +16,6 @@ runs:
     run: |
       ${{ inputs.python }} setup.py egg_info
       ${{ inputs.python }} -m pip install \
-          --find-links https://www.tortall.net/~robotpy/wheels/2021/${{ inputs.wheeldir }} \
+          --find-links https://www.tortall.net/~robotpy/wheels/2022/${{ inputs.wheeldir }} \
           wheel \
           $(grep -v '^\[' *.egg-info/requires.txt)

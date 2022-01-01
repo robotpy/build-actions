@@ -15,4 +15,4 @@ runs:
   - shell: bash
     run: |
       ${{ inputs.python }} -m robotpy_build build-dep --install \
-        --find-links https://www.tortall.net/~robotpy/wheels/2021/${{ inputs.wheeldir }}
+        --find-links https://www.tortall.net/~robotpy/wheels/2022/${{ inputs.wheeldir }}
