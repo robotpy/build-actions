@@ -7,7 +7,7 @@ if [ "$RUNNER_OS" != "Linux" ]; then
 	exit
 fi
 
-sudo apt-get install --no-install-recommends g++-8 gcc-8
+sudo apt-get install -y --no-install-recommends g++-8 gcc-8
 
 DIR="$RUNNER_TEMP/gcc-override"
 mkdir "$DIR"
