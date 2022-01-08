@@ -4,17 +4,20 @@ name: Package CI
 on:
   workflow_call:
     secrets:
-      # SSH login to upload to tortall
       SSH_USER:
+        description: User to SFTP as
       SSH_KEY:
+        description: Private key
       SSH_PASSPHRASE:
-      # for ping-meta
+        description: Decryption passphrase for private key
       META_REPO_ACCESS_TOKEN:
-      # for ReadTheDocs ping
+        description: Token to use to trigger bump workflow on robotpy-meta
       RTD_TOKEN:
+        description: Token to trigger ReadTheDocs webhook
       RTD_WEBHOOK:
-      # to publish this package to PyPI
+        description: ReadTheDocs webhook URL
       PYPI_API_TOKEN:
+        description: Token to publish the package to PyPI
 
 jobs:
   check:
