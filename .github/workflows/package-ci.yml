@@ -41,7 +41,7 @@ jobs:
         - '3.8'
         - '3.9'
         - '3.10'
-        architecture: [x86]
+        architecture: [x64]
 
     steps:
     - uses: actions/checkout@v2
