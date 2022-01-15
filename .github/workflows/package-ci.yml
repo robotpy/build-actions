@@ -3,6 +3,11 @@ name: Package CI
 
 on:
   workflow_call:
+    inputs:
+      enable_rtd:
+        required: false
+        default: true
+        type: bool
     secrets:
       SSH_USER:
         description: User to SFTP as
@@ -58,7 +63,7 @@ jobs:
     - uses: robotpy/build-actions/test-native-wheel@v2022
 
     - uses: robotpy/build-actions/validate-sphinx@v2022
-      if: ${{ secrets.RTD_TOKEN != "" && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04' }}
+      if: ${{ inputs.enable_rtd && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04' }}
 
     - uses: actions/upload-artifact@v2
       with:
@@ -193,7 +198,7 @@ jobs:
       with:
         token: ${{ secrets.RTD_TOKEN }}
         webhook: ${{ secrets.RTD_WEBHOOK }}
-      if: secrets.RTD_TOKEN != ""
+      if: inputs.enable_rtd
 
   ping:
     runs-on: ubuntu-latest
