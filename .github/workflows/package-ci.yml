@@ -41,12 +41,7 @@ jobs:
         - '3.8'
         - '3.9'
         - '3.10'
-        architecture: [x86, x64]
-        exclude:
-        - os: macos-10.15
-          architecture: x86
-        - os: ubuntu-18.04
-          architecture: x86
+        architecture: x86
 
     steps:
     - uses: actions/checkout@v2
