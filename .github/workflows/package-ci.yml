@@ -7,7 +7,7 @@ on:
       enable_rtd:
         required: false
         default: true
-        type: bool
+        type: boolean
     secrets:
       SSH_USER:
         description: User to SFTP as
