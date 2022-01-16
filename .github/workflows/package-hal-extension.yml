@@ -3,19 +3,6 @@ name: HAL Extension CI
 
 on:
   workflow_call:
-    inputs:
-      enable_rtd:
-        required: false
-        default: true
-        type: boolean
-      enable_sphinx_check:
-        required: false
-        default: true
-        type: boolean
-      enable_raspbian:
-        required: false
-        default: true
-        type: boolean
     secrets:
       SSH_USER:
         description: User to SFTP as
