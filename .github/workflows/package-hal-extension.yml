@@ -74,7 +74,7 @@ jobs:
 
     - uses: actions/download-artifact@v2
       with:
-        name: dist-macos-latest
+        name: dist-macos-11
         path: dist/
 
     - uses: actions/download-artifact@v2
