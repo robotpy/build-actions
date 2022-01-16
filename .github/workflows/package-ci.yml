@@ -8,6 +8,10 @@ on:
         required: false
         default: true
         type: boolean
+      ignore_rtd_check:
+        required: false
+        default: false
+        type: boolean
       enable_raspbian:
         required: false
         default: true
@@ -67,7 +71,7 @@ jobs:
     - uses: robotpy/build-actions/test-native-wheel@v2022
 
     - uses: robotpy/build-actions/validate-sphinx@v2022
-      if: inputs.enable_rtd && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04'
+      if: inputs.ignore_rtd_check == false && inputs.enable_rtd && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04'
 
     - uses: actions/upload-artifact@v2
       with:
