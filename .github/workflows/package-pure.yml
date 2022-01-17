@@ -90,7 +90,7 @@ jobs:
       if: ${{ matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04' }}
 
 
-  publish:
+  publish-pypi:
     runs-on: ubuntu-latest
     needs: [check, test]
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
