@@ -28,7 +28,6 @@ runs:
     env:
       RPYBUILD_PARALLEL: 1
       RPYBUILD_STRIP_LIBPYTHON: 1
-      MACOSX_DEPLOYMENT_TARGET: ${{ env.osx_target }}
   - shell: bash
     run: |
       ORIG_PLAT_TAG="linux_x86_64"
