@@ -5,16 +5,28 @@ inputs:
     description: "python executable"
     required: false
     default: python
+  osx_target:
+    description: Target OSX platform
+    required: false
+    default:
 runs:
   using: composite
   steps:
+  - name: Setup default OSX deployment target
+    run: |
+      echo "MACOSX_DEPLOYMENT_TARGET=10.14 >> $GITHUB_ENV"
+  - name: Setup override OSX deployment target
+    if: ${{ inputs.osx_target != '' }}
+    run: |
+      echo "MACOSX_DEPLOYMENT_TARGET=${{ inputs.osx_target }} >> $GITHUB_ENV"
+
   - shell: bash
     run: |
       ${{ inputs.python }} setup.py bdist_wheel
     env:
       RPYBUILD_PARALLEL: 1
       RPYBUILD_STRIP_LIBPYTHON: 1
-      MACOSX_DEPLOYMENT_TARGET: 10.14
+      MACOSX_DEPLOYMENT_TARGET: ${{ env.osx_target }}
   - shell: bash
     run: |
       ORIG_PLAT_TAG="linux_x86_64"
