@@ -16,6 +16,10 @@ on:
         required: false
         default: true
         type: boolean
+      enable_roborio:
+        required: false
+        default: true
+        type: boolean
     secrets:
       SSH_USER:
         description: User to SFTP as
@@ -97,24 +101,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      if: inputs.enable_raspbian || matrix.os.name != 'raspbian'
+      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
     - uses: robotpy/build-actions/install-robotpy-build@v2022
-      if: inputs.enable_raspbian || matrix.os.name != 'raspbian'
+      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
     - uses: robotpy/build-actions/install-build-deps@v2022
-      if: inputs.enable_raspbian || matrix.os.name != 'raspbian'
+      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
         wheeldir: ${{ matrix.os.name }}
     - uses: robotpy/build-actions/build-wheel@v2022
-      if: inputs.enable_raspbian || matrix.os.name != 'raspbian'
+      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
 
     - uses: actions/upload-artifact@v2
-      if: inputs.enable_raspbian || matrix.os.name != 'raspbian'
+      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         name: dist-${{ matrix.os.name }}
         path: dist
@@ -135,11 +139,13 @@ jobs:
     #
 
     - uses: actions/download-artifact@v2
+      if: inputs.enable_roborio
       with:
         name: dist-roborio
         path: dist-roborio/
 
     - uses: robotpy/github-action-scp@atomic
+      if: inputs.enable_roborio
       with:
         local: dist-roborio
         remote: public_html/2022/roborio
