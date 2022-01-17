@@ -56,8 +56,8 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      matrix: ${{ inputs.matrix_os }}
-        os: [windows-latest, macos-11, ubuntu-18.04]
+      matrix: 
+        os: ${{ inputs.matrix_os }}
         python_version:
         - '3.6'
         - '3.7'
