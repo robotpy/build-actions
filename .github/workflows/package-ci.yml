@@ -20,6 +20,10 @@ on:
         required: false
         default: true
         type: boolean
+      osx_target:
+        required: false
+        default: ''
+        type: string
     secrets:
       SSH_USER:
         description: User to SFTP as
@@ -72,6 +76,8 @@ jobs:
     - uses: robotpy/build-actions/install-robotpy-build@v2022
     - uses: robotpy/build-actions/install-build-deps@v2022
     - uses: robotpy/build-actions/build-wheel@v2022
+      with:
+        osx_target: ${{ inputs.osx_target }}
     - uses: robotpy/build-actions/test-native-wheel@v2022
 
     - uses: robotpy/build-actions/validate-sphinx@v2022
