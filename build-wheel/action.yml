@@ -22,6 +22,10 @@ runs:
       echo "MACOSX_DEPLOYMENT_TARGET=${{ inputs.osx_target }}" >> $GITHUB_ENV
     if: ${{ inputs.osx_target != '' }}
 
+  - sheel: bash
+    run: |
+      ${{ inputs.python }} -m pip debug --verbose
+
   - shell: bash
     run: |
       ${{ inputs.python }} setup.py bdist_wheel
