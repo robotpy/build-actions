@@ -27,7 +27,7 @@ on:
       matrix_os:
         required: false
         default: >-
-          ["windows-latest", "macos-11", "ubuntu-18.04"]
+          ["windows-latest", "macos-10.15", "ubuntu-18.04"]
         type: string
     secrets:
       SSH_USER:
@@ -203,9 +203,9 @@ jobs:
         path: dist/
 
     - uses: actions/download-artifact@v2
-      if: ${{ contains(inputs.matrix_os, 'macos-11' ) }}
+      if: ${{ contains(inputs.matrix_os, 'macos-10.15' ) }}
       with:
-        name: dist-macos-11
+        name: dist-macos-10.15
         path: dist/
 
     - uses: actions/download-artifact@v2
