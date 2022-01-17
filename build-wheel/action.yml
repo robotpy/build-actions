@@ -34,3 +34,9 @@ runs:
       MANYLINUX_TAG="manylinux_2_27_x86_64"
       for x in $(find ./dist -name "*$ORIG_PLAT_TAG.whl"); do mv $x ${x%$ORIG_PLAT_TAG.whl}$MANYLINUX_TAG.whl;done
       ls -l ./dist/*
+  - shell: bash
+    run: |
+      ORIG_PLAT_TAG="macosx_11_0_x86_64"
+      MAC_COMPAT_TAG="macosx_10_16_x86_64"
+      for x in $(find ./dist -name "*$ORIG_PLAT_TAG.whl"); do mv $x ${x%$ORIG_PLAT_TAG.whl}$MAC_COMPAT_TAG.whl;done
+      ls -l ./dist/*
