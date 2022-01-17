@@ -60,7 +60,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix: 
-        os: ${{ inputs.matrix_os }}
+        os: ${{ fromJSON(inputs.matrix_os) }}
         python_version:
         - '3.6'
         - '3.7'
