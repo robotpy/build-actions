@@ -24,10 +24,6 @@ runs:
 
   - shell: bash
     run: |
-      ${{ inputs.python }} -m pip debug --verbose
-
-  - shell: bash
-    run: |
       ${{ inputs.python }} setup.py bdist_wheel
     env:
       RPYBUILD_PARALLEL: 1
