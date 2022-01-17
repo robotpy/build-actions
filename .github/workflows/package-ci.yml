@@ -24,8 +24,11 @@ on:
         required: false
         default: ''
         type: string
-      matrix_os: >-
-        ["windows-latest", "macos-11", "ubuntu-18.04"]
+      matrix_os:
+        required: false
+        default: >-
+          ["windows-latest", "macos-11", "ubuntu-18.04"]
+        type: string
     secrets:
       SSH_USER:
         description: User to SFTP as
