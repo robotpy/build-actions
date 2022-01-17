@@ -93,7 +93,7 @@ jobs:
     - uses: robotpy/build-actions/test-native-wheel@v2022
 
     - uses: robotpy/build-actions/validate-sphinx@v2022
-      if: ${{ matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04' }}
+      if: inputs.enable_sphinx_check && inputs.enable_rtd && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04'
 
 
   publish-pypi:
