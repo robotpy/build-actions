@@ -209,6 +209,12 @@ jobs:
         path: dist/
 
     - uses: actions/download-artifact@v2
+      if: ${{ contains(inputs.matrix_os, 'macos-11' ) }}
+      with:
+        name: dist-macos-11
+        path: dist/
+
+    - uses: actions/download-artifact@v2
       if: ${{ contains(inputs.matrix_os, 'ubuntu-18.04' ) }}
       with:
         name: dist-ubuntu-18.04
