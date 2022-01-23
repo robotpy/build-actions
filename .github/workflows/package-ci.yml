@@ -102,7 +102,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - container: robotpy/roborio-cross-ubuntu:2022.2
+        - container: robotpy/roborio-cross-ubuntu:2022.3
           name: roborio
         - container: robotpy/raspbian-cross-ubuntu:2022.1
           name: raspbian
