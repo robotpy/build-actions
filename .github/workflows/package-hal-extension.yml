@@ -4,12 +4,6 @@ name: HAL Extension CI
 on:
   workflow_call:
     secrets:
-      SSH_USER:
-        description: User to SFTP as
-      SSH_KEY:
-        description: Private key
-      SSH_PASSPHRASE:
-        description: Decryption passphrase for private key
       META_REPO_ACCESS_TOKEN:
         description: Token to use to trigger bump workflow on robotpy-meta
       PYPI_API_TOKEN:
@@ -59,7 +53,7 @@ jobs:
 
 
 
-  publish-pypi:
+  publish:
     runs-on: ubuntu-latest
     needs: [check, build]
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
@@ -95,12 +89,6 @@ jobs:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
 
-  ping:
-    runs-on: ubuntu-latest
-    needs: [publish-pypi]
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-
-    steps:
     - uses: robotpy/build-actions/ping-meta@v2022
       with:
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        token: ${{ secrets.META_REPO_ACCESS_TOKEN }}
