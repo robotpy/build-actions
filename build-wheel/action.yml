@@ -15,7 +15,7 @@ runs:
   - name: Setup default OSX deployment target
     shell: bash
     run: |
-      echo "MACOSX_DEPLOYMENT_TARGET=10.14" >> $GITHUB_ENV
+      echo "MACOSX_DEPLOYMENT_TARGET=11" >> $GITHUB_ENV
   - name: Setup override OSX deployment target
     shell: bash
     run: |
