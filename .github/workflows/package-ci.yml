@@ -73,17 +73,17 @@ jobs:
     - uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python_version }}
-    - uses: robotpy/build-actions/setup-cxx@v2022
+    - uses: robotpy/build-actions/setup-cxx@v2023
       if: matrix.os == 'ubuntu-18.04'
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2022
-    - uses: robotpy/build-actions/install-build-deps@v2022
-    - uses: robotpy/build-actions/build-wheel@v2022
+    - uses: robotpy/build-actions/install-robotpy-build@v2023
+    - uses: robotpy/build-actions/install-build-deps@v2023
+    - uses: robotpy/build-actions/build-wheel@v2023
       with:
         osx_target: ${{ inputs.osx_target }}
-    - uses: robotpy/build-actions/test-native-wheel@v2022
+    - uses: robotpy/build-actions/test-native-wheel@v2023
 
-    - uses: robotpy/build-actions/validate-sphinx@v2022
+    - uses: robotpy/build-actions/validate-sphinx@v2023
       if: inputs.enable_sphinx_check && inputs.enable_rtd && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04'
 
     - uses: actions/upload-artifact@v2
@@ -112,16 +112,16 @@ jobs:
     - uses: actions/checkout@v2
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2022
+    - uses: robotpy/build-actions/install-robotpy-build@v2023
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
-    - uses: robotpy/build-actions/install-build-deps@v2022
+    - uses: robotpy/build-actions/install-build-deps@v2023
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
         wheeldir: ${{ matrix.os.name }}
-    - uses: robotpy/build-actions/build-wheel@v2022
+    - uses: robotpy/build-actions/build-wheel@v2023
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
@@ -222,8 +222,8 @@ jobs:
       with:
         python-version: 3.8
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2022
-    - uses: robotpy/build-actions/build-sdist@v2022
+    - uses: robotpy/build-actions/install-robotpy-build@v2023
+    - uses: robotpy/build-actions/build-sdist@v2023
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
@@ -232,7 +232,7 @@ jobs:
         password: ${{ secrets.PYPI_API_TOKEN }}
 
     - name: Ping readthedocs
-      uses: robotpy/build-actions/ping-rtd@v2022
+      uses: robotpy/build-actions/ping-rtd@v2023
       with:
         token: ${{ secrets.RTD_TOKEN }}
         webhook: ${{ secrets.RTD_WEBHOOK }}
@@ -244,6 +244,6 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
-    - uses: robotpy/build-actions/ping-meta@v2022
+    - uses: robotpy/build-actions/ping-meta@v2023
       with:
         token: ${{ secrets.META_REPO_ACCESS_TOKEN }}
