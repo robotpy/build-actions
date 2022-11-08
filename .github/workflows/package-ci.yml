@@ -27,7 +27,7 @@ on:
       matrix_os:
         required: false
         default: >-
-          ["windows-2019", "macos-10.15", "ubuntu-18.04"]
+          ["windows-2022", "macos-11", "ubuntu-22.04"]
         type: string
     secrets:
       SSH_USER:
