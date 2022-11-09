@@ -49,7 +49,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: psf/black@stable
 
   #
@@ -70,8 +70,8 @@ jobs:
         - '3.11'
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python_version }}
     - uses: robotpy/build-actions/setup-cxx@v2023
@@ -87,7 +87,7 @@ jobs:
     - uses: robotpy/build-actions/validate-sphinx@v2023
       if: inputs.enable_sphinx_check && inputs.enable_rtd && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04'
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: "dist-${{ matrix.os }}"
         path: dist
@@ -110,7 +110,7 @@ jobs:
       image: "${{ matrix.os.container }}"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
     - uses: robotpy/build-actions/install-robotpy-build@v2023
@@ -127,7 +127,7 @@ jobs:
       with:
         python: /build/venv/bin/cross-python
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         name: dist-${{ matrix.os.name }}
@@ -148,7 +148,7 @@ jobs:
     # RoboRIO wheel
     #
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       if: inputs.enable_roborio
       with:
         name: dist-roborio
@@ -169,7 +169,7 @@ jobs:
     # Raspbian wheel
     #
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       if: inputs.enable_raspbian
       with:
         name: dist-raspbian
@@ -193,33 +193,33 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       if: ${{ contains(inputs.matrix_os, 'windows-2019' ) }}
       with:
         name: dist-windows-2019
         path: dist/
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       if: ${{ contains(inputs.matrix_os, 'macos-10.15' ) }}
       with:
         name: dist-macos-10.15
         path: dist/
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       if: ${{ contains(inputs.matrix_os, 'macos-11' ) }}
       with:
         name: dist-macos-11
         path: dist/
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       if: ${{ contains(inputs.matrix_os, 'ubuntu-18.04' ) }}
       with:
         name: dist-ubuntu-18.04
         path: dist/
 
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: 3.8
 
