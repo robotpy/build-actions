@@ -14,5 +14,5 @@ runs:
   steps:
   - shell: bash
     run: |
-      ${{ inputs.python }} -m robotpy_build build-dep --install \
-        --find-links https://www.tortall.net/~robotpy/wheels/2022/${{ inputs.wheeldir }}
+      ${{ inputs.python }} -m robotpy_build build-dep --install --pre \
+        --find-links https://www.tortall.net/~robotpy/wheels/2023/${{ inputs.wheeldir }}

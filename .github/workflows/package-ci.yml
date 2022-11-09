@@ -158,7 +158,7 @@ jobs:
       if: inputs.enable_roborio
       with:
         local: dist-roborio
-        remote: public_html/2022/roborio
+        remote: public_html/2023/roborio
         host: narya.tortall.net
         username: ${{ secrets.SSH_USER }}
         privateKey: ${{ secrets.SSH_KEY }}
@@ -179,7 +179,7 @@ jobs:
       if: inputs.enable_raspbian
       with:
         local: dist-raspbian
-        remote: public_html/2022/raspbian
+        remote: public_html/2023/raspbian
         host: narya.tortall.net
         username: ${{ secrets.SSH_USER }}
         privateKey: ${{ secrets.SSH_KEY }}
