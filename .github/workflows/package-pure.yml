@@ -76,9 +76,9 @@ jobs:
         name: dist
         path: dist
 
-    - uses: robotpy/build-actions/test-native-wheel@v2022
+    - uses: robotpy/build-actions/test-native-wheel@v2023
 
-    - uses: robotpy/build-actions/validate-sphinx@v2022
+    - uses: robotpy/build-actions/validate-sphinx@v2023
       if: inputs.enable_sphinx_check && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04'
 
 
@@ -100,6 +100,6 @@ jobs:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
 
-    - uses: robotpy/build-actions/ping-meta@v2022
+    - uses: robotpy/build-actions/ping-meta@v2023
       with:
         token: ${{ secrets.META_REPO_ACCESS_TOKEN }}

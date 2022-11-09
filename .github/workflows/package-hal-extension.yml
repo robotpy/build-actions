@@ -41,10 +41,10 @@ jobs:
         python-version: ${{ matrix.python_version }}
         architecture: ${{ matrix.architecture }}
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2022
-    - uses: robotpy/build-actions/install-build-deps@v2022
-    - uses: robotpy/build-actions/build-wheel@v2022
-    - uses: robotpy/build-actions/test-native-wheel@v2022
+    - uses: robotpy/build-actions/install-robotpy-build@v2023
+    - uses: robotpy/build-actions/install-build-deps@v2023
+    - uses: robotpy/build-actions/build-wheel@v2023
+    - uses: robotpy/build-actions/test-native-wheel@v2023
 
     - uses: actions/upload-artifact@v3
       with:
@@ -80,8 +80,8 @@ jobs:
       with:
         python-version: 3.8
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2022
-    - uses: robotpy/build-actions/build-sdist@v2022
+    - uses: robotpy/build-actions/install-robotpy-build@v2023
+    - uses: robotpy/build-actions/build-sdist@v2023
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@master
@@ -89,6 +89,6 @@ jobs:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
 
-    - uses: robotpy/build-actions/ping-meta@v2022
+    - uses: robotpy/build-actions/ping-meta@v2023
       with:
         token: ${{ secrets.META_REPO_ACCESS_TOKEN }}
