@@ -122,7 +122,7 @@ jobs:
         os:
         - container: robotpy/roborio-cross-ubuntu:2023.1
           name: roborio
-        - container: robotpy/raspbian-cross-ubuntu:2022.1
+        - container: robotpy/raspbian-cross-ubuntu:2023.1
           name: raspbian
 
     container:
