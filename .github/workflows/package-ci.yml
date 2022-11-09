@@ -85,7 +85,7 @@ jobs:
     - uses: robotpy/build-actions/test-native-wheel@v2023
 
     - uses: robotpy/build-actions/validate-sphinx@v2023
-      if: inputs.enable_sphinx_check && inputs.enable_rtd && matrix.python_version == '3.7' && matrix.os == 'ubuntu-18.04'
+      if: inputs.enable_sphinx_check && inputs.enable_rtd && matrix.python_version == '3.7' && startsWith(matrix.os, 'ubuntu-')
 
     - uses: actions/upload-artifact@v3
       with:

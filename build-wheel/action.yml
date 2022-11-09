@@ -31,7 +31,7 @@ runs:
   - shell: bash
     run: |
       ORIG_PLAT_TAG="linux_x86_64"
-      MANYLINUX_TAG="manylinux_2_27_x86_64"
+      MANYLINUX_TAG="manylinux_2_35_x86_64"
       for x in $(find ./dist -name "*$ORIG_PLAT_TAG.whl"); do mv $x ${x%$ORIG_PLAT_TAG.whl}$MANYLINUX_TAG.whl;done
       ls -l ./dist/*
   - shell: bash
