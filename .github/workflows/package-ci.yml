@@ -131,6 +131,17 @@ jobs:
     - uses: actions/checkout@v3
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
+    - name: Set ccache env
+      shell: bash
+      run: |
+        echo "RPYBUILD_CC_LAUNCHER=ccache" >> $GITHUB_ENV
+
+    - name: Setup ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ matrix.os.container }}
+          variant: ccache
+
     - uses: robotpy/build-actions/install-robotpy-build@v2023
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
