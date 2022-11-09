@@ -1,7 +1,0 @@
-name: setup-cxx
-description: 'Set up a C++ compiler and add it to the PATH.'
-runs:
-  using: composite
-  steps:
-    - shell: bash
-      run: ${{ github.action_path }}/setup.sh
