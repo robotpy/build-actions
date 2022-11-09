@@ -77,6 +77,24 @@ jobs:
     - uses: robotpy/build-actions/setup-cxx@v2023
       if: matrix.os == 'ubuntu-18.04'
 
+    - name: Set ccache variant
+      shell: bash
+      id: ccache
+      run: |
+        if [[ "${{ matrix.os }}" == windows-* ]]; then
+          echo "VARIANT=sccache" >> $GITHUB_OUTPUT
+          echo "RPYBUILD_CC_LAUNCHER=sccache" >> $GITHUB_ENV
+        else
+          echo "VARIANT=ccache" >> $GITHUB_OUTPUT
+          echo "RPYBUILD_CC_LAUNCHER=ccache" >> $GITHUB_ENV
+        fi
+
+    - name: Setup ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+          key: ${{ matrix.os }}-${{ matrix.python_version }}
+          variant: ${{ steps.ccache.outputs.variant }}
+
     - uses: robotpy/build-actions/install-robotpy-build@v2023
     - uses: robotpy/build-actions/install-build-deps@v2023
     - uses: robotpy/build-actions/build-wheel@v2023
