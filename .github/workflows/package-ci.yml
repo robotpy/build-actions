@@ -79,7 +79,7 @@ jobs:
       shell: bash
       id: ccache
       run: |
-        if [[ "${{ matrix.os }}" == windows-* ]]; then
+        if [[ "${{ runner.os }}" == "Windows" ]]; then
           echo "VARIANT=sccache" >> $GITHUB_OUTPUT
           echo "RPYBUILD_CC_LAUNCHER=sccache" >> $GITHUB_ENV
         else
@@ -101,11 +101,11 @@ jobs:
     - uses: robotpy/build-actions/test-native-wheel@v2023
 
     - uses: robotpy/build-actions/validate-sphinx@v2023
-      if: inputs.enable_sphinx_check && inputs.enable_rtd && matrix.python_version == '3.7' && startsWith(matrix.os, 'ubuntu-')
+      if: inputs.enable_sphinx_check && inputs.enable_rtd && matrix.python_version == '3.7' && runner.os == 'Linux'
 
     - uses: actions/upload-artifact@v3
       with:
-        name: "dist-${{ matrix.os }}"
+        name: "dist-${{ runner.os }}"
         path: dist
 
   #
@@ -225,25 +225,31 @@ jobs:
     - uses: actions/download-artifact@v3
       if: ${{ contains(inputs.matrix_os, 'windows-2019' ) }}
       with:
-        name: dist-windows-2019
+        name: dist-Windows
+        path: dist/
+    
+    - uses: actions/download-artifact@v3
+      if: ${{ contains(inputs.matrix_os, 'windows-2022' ) }}
+      with:
+        name: dist-Windows
         path: dist/
 
     - uses: actions/download-artifact@v3
       if: ${{ contains(inputs.matrix_os, 'macos-10.15' ) }}
       with:
-        name: dist-macos-10.15
+        name: dist-macOS
         path: dist/
 
     - uses: actions/download-artifact@v3
       if: ${{ contains(inputs.matrix_os, 'macos-11' ) }}
       with:
-        name: dist-macos-11
+        name: dist-macOS
         path: dist/
 
     - uses: actions/download-artifact@v3
-      if: ${{ contains(inputs.matrix_os, 'ubuntu-18.04' ) }}
+      if: ${{ contains(inputs.matrix_os, 'ubuntu-22.04' ) }}
       with:
-        name: dist-ubuntu-18.04
+        name: dist-Linux
         path: dist/
 
     - uses: actions/setup-python@v4
