@@ -97,6 +97,10 @@ jobs:
     - uses: robotpy/build-actions/build-wheel@v2023
       with:
         osx_target: ${{ inputs.osx_target }}
+    - shell: bash
+      run: |
+        python -m pip list
+
     - uses: robotpy/build-actions/test-native-wheel@v2023
 
     - uses: robotpy/build-actions/validate-sphinx@v2023
