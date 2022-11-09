@@ -59,7 +59,6 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix: 
         os: ${{ fromJSON(inputs.matrix_os) }}
         python_version:
@@ -134,6 +133,7 @@ jobs:
       run: |
         echo "RPYBUILD_CC_LAUNCHER=ccache" >> $GITHUB_ENV
 
+    - run: apt-get update
     - name: Setup ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
