@@ -268,6 +268,7 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+        verify_metadata: false
 
     - name: Ping readthedocs
       uses: robotpy/build-actions/ping-rtd@v2023
