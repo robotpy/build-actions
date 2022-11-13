@@ -25,13 +25,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2019, macos-10.15, ubuntu-18.04]
+        os: ["ubuntu-22.04", "macos-11", "windows-2022"]
         python_version:
-        - '3.6'
         - '3.7'
         - '3.8'
         - '3.9'
         - '3.10'
+        - '3.11'
         architecture: [x64]
 
     steps:
