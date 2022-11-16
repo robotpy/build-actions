@@ -29,6 +29,10 @@ on:
         default: >-
           ["ubuntu-22.04", "macos-11", "windows-2022"]
         type: string
+      fail_fast:
+        required: false
+        default: true
+        type: boolean
       default_branch:
         required: false
         default: 'main'
@@ -91,6 +95,7 @@ jobs:
     needs: [setup_concurrency]
     strategy:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
+      fail-fast: ${{ inputs.fail_fast }}
       matrix: 
         os: ${{ fromJSON(inputs.matrix_os) }}
         python_version:
