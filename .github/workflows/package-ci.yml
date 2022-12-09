@@ -325,6 +325,10 @@ jobs:
         password: ${{ secrets.PYPI_API_TOKEN }}
         verify_metadata: false
 
+    - name: Wait 3 minutes for PyPI before pinging RTD
+      shell: bash
+      run: sleep 180
+
     - name: Ping readthedocs
       uses: robotpy/build-actions/ping-rtd@v2023
       with:
