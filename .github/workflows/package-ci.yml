@@ -161,7 +161,7 @@ jobs:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       matrix:
         os:
-        - container: robotpy/roborio-cross-ubuntu:2023.1
+        - container: robotpy/roborio-cross-ubuntu:2023.2
           name: roborio
         - container: robotpy/raspbian-cross-ubuntu:2023.2
           name: raspbian
