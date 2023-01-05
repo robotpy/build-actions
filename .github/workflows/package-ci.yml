@@ -327,17 +327,16 @@ jobs:
         password: ${{ secrets.PYPI_API_TOKEN }}
         verify_metadata: false
 
-    - name: Wait 3 minutes for PyPI before pinging RTD
-      shell: bash
-      run: sleep 180
-      if: inputs.enable_rtd
-
+  ping-rtd:
+    runs-on: ubuntu-latest
+    needs: [check, build, cross-build]
+    if: inputs.enable_rtd
+    steps:
     - name: Ping readthedocs
       uses: robotpy/build-actions/ping-rtd@v2023
       with:
         token: ${{ secrets.RTD_TOKEN }}
         webhook: ${{ secrets.RTD_WEBHOOK }}
-      if: inputs.enable_rtd
 
   ping:
     runs-on: ubuntu-latest
