@@ -101,6 +101,6 @@ jobs:
         password: ${{ secrets.PYPI_API_TOKEN }}
         verify_metadata: false
 
-    - uses: robotpy/build-actions/ping-meta@v2023
-      with:
-        token: ${{ secrets.META_REPO_ACCESS_TOKEN }}
+    # - uses: robotpy/build-actions/ping-meta@v2023
+    #   with:
+    #     token: ${{ secrets.META_REPO_ACCESS_TOKEN }}
