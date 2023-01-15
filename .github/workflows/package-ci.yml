@@ -337,6 +337,9 @@ jobs:
       inputs.enable_rtd && github.event_name == 'push' &&
       (startsWith(github.event.ref, 'refs/tags') || github.event.ref == 'refs/heads/main')
     steps:
+    - name: Sleep 1 minute to allow artifact upload
+      shell: bash
+      run: sleep 60
     - name: Ping readthedocs
       uses: robotpy/build-actions/ping-rtd@v2023
       with:
