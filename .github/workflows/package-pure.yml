@@ -35,9 +35,7 @@ jobs:
       with:
         python-version: 3.8
 
-    - run: pip install build
-
-    - run: python -m build
+    - run: pipx run build
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
