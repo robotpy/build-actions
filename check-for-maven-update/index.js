@@ -13,7 +13,7 @@ async function run() {
     try {
 
         let rpybuild;
-        await octokit.repos.getContent({
+        await octokit.rest.repos.getContent({
             owner: context.repo.owner, // should be 'robotpy'
             repo: context.repo.repo,
             ref: context.ref,
@@ -108,7 +108,7 @@ async function run() {
                 // update existing issue instead creating a new one
                 core.info("Updating existing issue.");
                 try {
-                    const issue = await octokit.issues.update({
+                    const issue = await octokit.rest.issues.update({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
                         issue_number: existingIssue.number,
@@ -125,7 +125,7 @@ async function run() {
             // create a new issue
             core.info("Creating new issue.");
             try {
-                const issue = await octokit.issues.create({
+                const issue = await octokit.rest.issues.create({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     title: issueTitle,
@@ -144,4 +144,4 @@ async function run() {
     }
 }
 
-run()
+run();
