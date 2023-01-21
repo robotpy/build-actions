@@ -166,9 +166,21 @@ jobs:
         os:
         - container: robotpy/roborio-cross-ubuntu:2023.2
           name: roborio
-        - container: robotpy/raspbian-cross-ubuntu:2023.3-arm32
+        - container: robotpy/raspbian-cross-ubuntu:2023.4-py38-arm32
           name: raspbian
-        - container: robotpy/raspbian-cross-ubuntu:2023.3-aarch64
+        - container: robotpy/raspbian-cross-ubuntu:2023.4-py38-aarch64
+          name: raspbian
+        - container: robotpy/raspbian-cross-ubuntu:2023.4-py39-arm32
+          name: raspbian
+        - container: robotpy/raspbian-cross-ubuntu:2023.4-py39-aarch64
+          name: raspbian
+        - container: robotpy/raspbian-cross-ubuntu:2023.4-py310-arm32
+          name: raspbian
+        - container: robotpy/raspbian-cross-ubuntu:2023.4-py310-aarch64
+          name: raspbian
+        - container: robotpy/raspbian-cross-ubuntu:2023.4-py311-arm32
+          name: raspbian
+        - container: robotpy/raspbian-cross-ubuntu:2023.4-py311-aarch64
           name: raspbian
 
     container:
