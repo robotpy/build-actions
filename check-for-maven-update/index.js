@@ -93,7 +93,7 @@ async function run() {
         let existingIssue;
         // refer https://github.com/JasonEtco/create-an-issue/blob/main/src/action.ts
         try {
-            const existingIssues = await octokit.search.issuesAndPullRequests({
+            const existingIssues = await octokit.rest.search.issuesAndPullRequests({
                 q: `is:open is:issue repo:${process.env.GITHUB_REPOSITORY} in:title ${issueTitle}`
             });
             existingIssue = existingIssues.data.items.find(issue => issue.title === issueTitle);
