@@ -84,9 +84,8 @@ jobs:
     - uses: robotpy/build-actions/build-sdist@v2023
 
     - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@master
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
         verify_metadata: false
 
