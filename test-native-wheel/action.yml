@@ -9,6 +9,7 @@ runs:
     run: |
       python -m pip list
   - name: Install native wheel
+    shell: bash
     run: |
       cd dist
       python -m pip --disable-pip-version-check install *.whl
