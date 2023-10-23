@@ -6,8 +6,6 @@ on:
     secrets:
       META_REPO_ACCESS_TOKEN:
         description: Token to use to trigger bump workflow on robotpy-meta
-      PYPI_API_TOKEN:
-        description: Token to publish the package to PyPI
 
 
 jobs:

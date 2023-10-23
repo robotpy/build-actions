@@ -50,8 +50,10 @@ on:
         description: Token to trigger ReadTheDocs webhook
       RTD_WEBHOOK:
         description: ReadTheDocs webhook URL
-      PYPI_API_TOKEN:
-        description: Token to publish the package to PyPI
+      WPI_ARTIFACTORY_USERNAME:
+        description: Username to upload to artifactory
+      WPI_ARTIFACTORY_TOKEN:
+        description: Token to use to upload to artifactory
 
 concurrency:
   group: ${{ github.ref }}
