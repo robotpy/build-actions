@@ -30,7 +30,7 @@ on:
       matrix_os:
         required: false
         default: >-
-          ["ubuntu-22.04", "macos-11", "windows-2022"]
+          ["ubuntu-22.04", "macos-12", "windows-2022"]
         type: string
       fail_fast:
         required: false
@@ -306,6 +306,12 @@ jobs:
 
     - uses: actions/download-artifact@v3
       if: ${{ contains(inputs.matrix_os, 'macos-11' ) }}
+      with:
+        name: dist-macOS
+        path: dist/
+    
+    - uses: actions/download-artifact@v3
+      if: ${{ contains(inputs.matrix_os, 'macos-12' ) }}
       with:
         name: dist-macOS
         path: dist/
