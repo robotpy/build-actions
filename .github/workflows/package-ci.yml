@@ -213,10 +213,10 @@ jobs:
           key: ${{ matrix.os.container }}
           variant: ccache
 
-    - name: Install setuptools
+    - name: Install setuptools + wheel
       run: |
-        /build/venv/bin/build-pip --disable-pip-version-check install setuptools
-        /build/venv/bin/cross-pip --disable-pip-version-check install setuptools
+        /build/venv/bin/build-pip --disable-pip-version-check install setuptools wheel
+        /build/venv/bin/cross-pip --disable-pip-version-check install setuptools wheel
 
     - uses: robotpy/build-actions/install-robotpy-build@v2024
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
