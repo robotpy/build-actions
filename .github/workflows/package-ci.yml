@@ -99,11 +99,11 @@ jobs:
       matrix: 
         os: ${{ fromJSON(inputs.matrix_os) }}
         python_version:
-        - '3.7'
         - '3.8'
         - '3.9'
         - '3.10'
         - '3.11'
+        - '3.12'
 
     steps:
     - uses: actions/checkout@v3
@@ -129,9 +129,9 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.python_version }}
           variant: ${{ steps.ccache.outputs.variant }}
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2023
-    - uses: robotpy/build-actions/install-build-deps@v2023
-    - uses: robotpy/build-actions/build-wheel@v2023
+    - uses: robotpy/build-actions/install-robotpy-build@v2024
+    - uses: robotpy/build-actions/install-build-deps@v2024
+    - uses: robotpy/build-actions/build-wheel@v2024
       with:
         osx_target: ${{ inputs.osx_target }}
 
@@ -140,9 +140,9 @@ jobs:
       run: |
         python -m pip list
 
-    - uses: robotpy/build-actions/test-native-wheel@v2023
+    - uses: robotpy/build-actions/test-native-wheel@v2024
 
-    - uses: robotpy/build-actions/validate-sphinx@v2023
+    - uses: robotpy/build-actions/validate-sphinx@v2024
       if: |
         inputs.enable_sphinx_check && inputs.enable_rtd &&
         matrix.python_version == '3.11' && runner.os == 'Linux' &&
@@ -164,23 +164,29 @@ jobs:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       matrix:
         os:
-        - container: robotpy/roborio-cross-ubuntu:2023.2
+        - container: wpilib/roborio-cross-ubuntu:2024-22.04-py312
           name: roborio
-        - container: robotpy/raspbian-cross-ubuntu:2023.4-py38-arm32
+
+        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py38
           name: raspbian
-        - container: robotpy/raspbian-cross-ubuntu:2023.4-py38-aarch64
+        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py39
           name: raspbian
-        - container: robotpy/raspbian-cross-ubuntu:2023.4-py39-arm32
+        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py310
           name: raspbian
-        - container: robotpy/raspbian-cross-ubuntu:2023.4-py39-aarch64
+        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py311
           name: raspbian
-        - container: robotpy/raspbian-cross-ubuntu:2023.4-py310-arm32
+        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py312
           name: raspbian
-        - container: robotpy/raspbian-cross-ubuntu:2023.4-py310-aarch64
+        
+        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py38
           name: raspbian
-        - container: robotpy/raspbian-cross-ubuntu:2023.4-py311-arm32
+        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py39
           name: raspbian
-        - container: robotpy/raspbian-cross-ubuntu:2023.4-py311-aarch64
+        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py310
+          name: raspbian
+        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py311
+          name: raspbian
+        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py312
           name: raspbian
 
     container:
@@ -202,15 +208,14 @@ jobs:
           key: ${{ matrix.os.container }}
           variant: ccache
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2023
+    - uses: robotpy/build-actions/install-robotpy-build@v2024
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
-    - uses: robotpy/build-actions/install-build-deps@v2023
+    - uses: robotpy/build-actions/install-build-deps@v2024
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
-        wheeldir: ${{ matrix.os.name }}
 
     - name: Show installed packages
       shell: bash
@@ -225,7 +230,7 @@ jobs:
         pwd
         /usr/bin/git config --global --add safe.directory $(pwd)
 
-    - uses: robotpy/build-actions/build-wheel@v2023
+    - uses: robotpy/build-actions/build-wheel@v2024
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
@@ -237,7 +242,7 @@ jobs:
         path: dist
 
   #
-  # Publish wheels to robotpy site, pypi
+  # Publish wheels to wpilib artifactory, pypi
   #
 
   publish-rpyrepo:
@@ -246,53 +251,32 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
-
-    #
-    # RoboRIO wheel
-    #
-
     - uses: actions/download-artifact@v3
       if: inputs.enable_roborio
       with:
         name: dist-roborio
-        path: dist-roborio/
-
-    - uses: robotpy/github-action-scp@atomic
-      if: inputs.enable_roborio
-      with:
-        local: dist-roborio
-        remote: public_html/2023/roborio
-        host: narya.tortall.net
-        username: ${{ secrets.SSH_USER }}
-        privateKey: ${{ secrets.SSH_KEY }}
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        atomicPut: true
-
-    #
-    # Raspbian wheel
-    #
+        path: dist/
 
     - uses: actions/download-artifact@v3
       if: inputs.enable_raspbian
       with:
         name: dist-raspbian
-        path: dist-raspbian/
+        path: dist/
 
     - uses: robotpy/github-action-scp@atomic
-      if: inputs.enable_raspbian
+      if: inputs.enable_roborio || inputs.enable_raspbian
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        local: dist-raspbian
-        remote: public_html/2023/raspbian
-        host: narya.tortall.net
-        username: ${{ secrets.SSH_USER }}
-        privateKey: ${{ secrets.SSH_KEY }}
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        atomicPut: true
+        user: ${{ secrets.WPI_ARTIFACTORY_USERNAME }}
+        password: ${{ secrets.WPI_ARTIFACTORY_TOKEN }}
+        repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/wpilib-python-release-2024-local
 
 
   publish-pypi:
     runs-on: ubuntu-latest
     needs: [check, build, cross-build]
+    permissions:
+      id-token: write
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
@@ -332,15 +316,11 @@ jobs:
       with:
         python-version: 3.8
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2023
-    - uses: robotpy/build-actions/build-sdist@v2023
+    - uses: robotpy/build-actions/install-robotpy-build@v2024
+    - uses: robotpy/build-actions/build-sdist@v2024
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
-        verify_metadata: false
 
   ping-rtd:
     runs-on: ubuntu-latest
@@ -353,7 +333,7 @@ jobs:
       shell: bash
       run: sleep 60
     - name: Ping readthedocs
-      uses: robotpy/build-actions/ping-rtd@v2023
+      uses: robotpy/build-actions/ping-rtd@v2024
       with:
         token: ${{ secrets.RTD_TOKEN }}
         webhook: ${{ secrets.RTD_WEBHOOK }}
@@ -364,6 +344,6 @@ jobs:
   #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
   #   steps:
-  #   - uses: robotpy/build-actions/ping-meta@v2023
+  #   - uses: robotpy/build-actions/ping-meta@v2024
   #     with:
   #       token: ${{ secrets.META_REPO_ACCESS_TOKEN }}

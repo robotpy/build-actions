@@ -54,11 +54,11 @@ jobs:
       matrix:
         os: [windows-2022, macos-11, ubuntu-22.04]
         python_version:
-        - '3.7'
         - '3.8'
         - '3.9'
         - '3.10'
         - '3.11'
+        - '3.12'
         architecture: [x64]
 
     steps:
@@ -74,15 +74,17 @@ jobs:
         name: dist
         path: dist
 
-    - uses: robotpy/build-actions/test-native-wheel@v2023
+    - uses: robotpy/build-actions/test-native-wheel@v2024
 
-    - uses: robotpy/build-actions/validate-sphinx@v2023
+    - uses: robotpy/build-actions/validate-sphinx@v2024
       if: inputs.enable_sphinx_check && matrix.python_version == '3.7' && startsWith(matrix.os, 'ubuntu-')
 
 
   publish:
     runs-on: ubuntu-latest
     needs: [check, test]
+    permissions:
+      id-token: write
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
@@ -94,11 +96,7 @@ jobs:
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
-        verify_metadata: false
 
-    # - uses: robotpy/build-actions/ping-meta@v2023
+    # - uses: robotpy/build-actions/ping-meta@v2024
     #   with:
     #     token: ${{ secrets.META_REPO_ACCESS_TOKEN }}

@@ -27,11 +27,11 @@ jobs:
       matrix:
         os: ["ubuntu-22.04", "macos-11", "windows-2022"]
         python_version:
-        - '3.7'
         - '3.8'
         - '3.9'
         - '3.10'
         - '3.11'
+        - '3.12'
         architecture: [x64]
 
     steps:
@@ -41,10 +41,10 @@ jobs:
         python-version: ${{ matrix.python_version }}
         architecture: ${{ matrix.architecture }}
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2023
-    - uses: robotpy/build-actions/install-build-deps@v2023
-    - uses: robotpy/build-actions/build-wheel@v2023
-    - uses: robotpy/build-actions/test-native-wheel@v2023
+    - uses: robotpy/build-actions/install-robotpy-build@v2024
+    - uses: robotpy/build-actions/install-build-deps@v2024
+    - uses: robotpy/build-actions/build-wheel@v2024
+    - uses: robotpy/build-actions/test-native-wheel@v2024
 
     - uses: actions/upload-artifact@v3
       with:
@@ -56,6 +56,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: [check, build]
+    permissions:
+      id-token: write
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
@@ -80,15 +82,12 @@ jobs:
       with:
         python-version: 3.8
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2023
-    - uses: robotpy/build-actions/build-sdist@v2023
+    - uses: robotpy/build-actions/install-robotpy-build@v2024
+    - uses: robotpy/build-actions/build-sdist@v2024
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
-        verify_metadata: false
 
-    # - uses: robotpy/build-actions/ping-meta@v2023
+    # - uses: robotpy/build-actions/ping-meta@v2024
     #   with:
     #     token: ${{ secrets.META_REPO_ACCESS_TOKEN }}
