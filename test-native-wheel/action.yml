@@ -5,9 +5,9 @@ runs:
   using: "composite"
   steps:
   - name: Show installed packages
-      shell: bash
-      run: |
-        python -m pip list
+    shell: bash
+    run: |
+      python -m pip list
   - name: Install native wheel
     run: |
       cd dist
