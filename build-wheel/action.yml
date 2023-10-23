@@ -25,7 +25,7 @@ runs:
   - name: Show installed packages
     shell: bash
     run: |
-      python -m pip list
+      ${{ inputs.python }} -m pip list
 
   - shell: bash
     run: |
