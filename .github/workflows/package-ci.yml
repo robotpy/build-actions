@@ -273,6 +273,7 @@ jobs:
     - if: inputs.enable_roborio || inputs.enable_raspbian
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
+        verify-metadata: false
         user: ${{ secrets.WPI_ARTIFACTORY_USERNAME }}
         password: ${{ secrets.WPI_ARTIFACTORY_TOKEN }}
         repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/${{ inputs.artifactory_repo_type }}-python-release-2024-local
@@ -333,6 +334,8 @@ jobs:
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        verify-metadata: false
 
   ping-rtd:
     runs-on: ubuntu-latest
