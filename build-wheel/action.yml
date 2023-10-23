@@ -21,6 +21,11 @@ runs:
     run: |
       echo "MACOSX_DEPLOYMENT_TARGET=${{ inputs.osx_target }}" >> $GITHUB_ENV
     if: ${{ inputs.osx_target != '' }}
+  
+  - name: Show installed packages
+    shell: bash
+    run: |
+      python -m pip list
 
   - shell: bash
     run: |

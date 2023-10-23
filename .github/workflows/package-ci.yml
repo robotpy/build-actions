@@ -140,11 +140,6 @@ jobs:
       with:
         osx_target: ${{ inputs.osx_target }}
 
-    - name: Show installed packages
-      shell: bash
-      run: |
-        python -m pip list
-
     - uses: robotpy/build-actions/test-native-wheel@v2024
 
     - uses: robotpy/build-actions/validate-sphinx@v2024

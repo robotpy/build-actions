@@ -4,10 +4,24 @@ description: "Installs built wheel and runs tests"
 runs:
   using: "composite"
   steps:
-  - shell: bash
+  - name: Show installed packages
+      shell: bash
+      run: |
+        python -m pip list
+  - name: Install native wheel
     run: |
       cd dist
       python -m pip --disable-pip-version-check install *.whl
-      cd ../tests
+  - name: Install test requirements
+    shell: bash
+    run: |
+      cd tests
       python -m pip --disable-pip-version-check install -r requirements.txt
+  - name: Show installed packages
+    shell: bash
+    run: |
+      python -m pip list
+  - name: Run tests
+    shell: bash
+    run: |
       python run_tests.py
