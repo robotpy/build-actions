@@ -6,6 +6,8 @@ on:
     secrets:
       META_REPO_ACCESS_TOKEN:
         description: Token to use to trigger bump workflow on robotpy-meta
+      PYPI_API_TOKEN:
+        description: Token to publish the package to PyPI
 
 
 jobs:
@@ -86,7 +88,9 @@ jobs:
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        verify-metadata: false
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        verify_metadata: false
 
     # - uses: robotpy/build-actions/ping-meta@v2024
     #   with:
