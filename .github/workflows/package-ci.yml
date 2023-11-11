@@ -32,6 +32,11 @@ on:
         default: >-
           ["ubuntu-22.04", "macos-12", "windows-2022"]
         type: string
+      python_versions:
+        required: false
+        default: >-
+          ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        type: string
       fail_fast:
         required: false
         default: true
@@ -99,12 +104,7 @@ jobs:
       fail-fast: ${{ inputs.fail_fast }}
       matrix: 
         os: ${{ fromJSON(inputs.matrix_os) }}
-        python_version:
-        - '3.8'
-        - '3.9'
-        - '3.10'
-        - '3.11'
-        - '3.12'
+        python_version: ${{ fromJson(inputs.python_versions) }}
 
     steps:
     - uses: actions/checkout@v3
