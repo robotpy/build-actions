@@ -116,22 +116,16 @@ jobs:
       shell: bash
       id: ccache
       run: |
-        #if [[ "${{ runner.os }}" == "Windows" ]]; then
-        #  echo "VARIANT=sccache" >> $GITHUB_OUTPUT
-        #  echo "RPYBUILD_CC_LAUNCHER=sccache" >> $GITHUB_ENV
-        #else
+        if [[ "${{ runner.os }}" == "Windows" ]]; then
+          echo "VARIANT=sccache" >> $GITHUB_OUTPUT
+          echo "RPYBUILD_CC_LAUNCHER=sccache" >> $GITHUB_ENV
+        else
           echo "VARIANT=ccache" >> $GITHUB_OUTPUT
           echo "RPYBUILD_CC_LAUNCHER=ccache" >> $GITHUB_ENV
-        #fi
-
-        if [[ "${{ runner.os }}" == "Windows" ]]; then
-          echo "CCACHE_DEBUG=1" >> $GITHUB_ENV
-          echo "CCACHE_DEBUGLEVEL=2" >> $GITHUB_ENV
-          echo "CCACHE_DEBUGDIR=ccache_debug" >> $GITHUB_ENV
         fi
 
     - name: Setup ccache
-      uses: robotpy/ccache-action@update-windows
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
           key: ${{ matrix.os }}-${{ matrix.python_version }}
           variant: ${{ steps.ccache.outputs.variant }}
@@ -154,12 +148,6 @@ jobs:
       with:
         name: "dist-${{ runner.os }}"
         path: dist
-
-    - uses: actions/upload-artifact@v3
-      if: success() || failure()
-      with:
-        name: "ccache_debug-${{ runner.os }}-${{ matrix.python_version }}"
-        path: ccache_debug
 
   #
   # Build roboRIO/raspbian wheels
@@ -211,7 +199,7 @@ jobs:
 
     - run: apt-get update
     - name: Setup ccache
-      uses: robotpy/ccache-action@update-windows
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
           key: ${{ matrix.os.container }}
           variant: ccache
