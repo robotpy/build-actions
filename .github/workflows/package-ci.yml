@@ -116,13 +116,13 @@ jobs:
       shell: bash
       id: ccache
       run: |
-        if [[ "${{ runner.os }}" == "Windows" ]]; then
-          echo "VARIANT=sccache" >> $GITHUB_OUTPUT
-          echo "RPYBUILD_CC_LAUNCHER=sccache" >> $GITHUB_ENV
-        else
+        #if [[ "${{ runner.os }}" == "Windows" ]]; then
+        #  echo "VARIANT=sccache" >> $GITHUB_OUTPUT
+        #  echo "RPYBUILD_CC_LAUNCHER=sccache" >> $GITHUB_ENV
+        #else
           echo "VARIANT=ccache" >> $GITHUB_OUTPUT
           echo "RPYBUILD_CC_LAUNCHER=ccache" >> $GITHUB_ENV
-        fi
+        #fi
 
     - name: Setup ccache
       uses: robotpy/ccache-action@update-windows
