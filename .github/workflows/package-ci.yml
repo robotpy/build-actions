@@ -125,7 +125,7 @@ jobs:
         fi
 
     - name: Setup ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: robotpy/ccache-action@update-windows
       with:
           key: ${{ matrix.os }}-${{ matrix.python_version }}
           variant: ${{ steps.ccache.outputs.variant }}
@@ -199,7 +199,7 @@ jobs:
 
     - run: apt-get update
     - name: Setup ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: robotpy/ccache-action@update-windows
       with:
           key: ${{ matrix.os.container }}
           variant: ccache
