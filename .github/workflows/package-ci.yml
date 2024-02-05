@@ -17,11 +17,11 @@ on:
         type: boolean
       enable_raspbian:
         required: false
-        default: true
+        default: false
         type: boolean
       enable_roborio:
         required: false
-        default: true
+        default: false
         type: boolean
       osx_target:
         required: false
@@ -30,7 +30,7 @@ on:
       matrix_os:
         required: false
         default: >-
-          ["ubuntu-22.04", "macos-12", "windows-2022"]
+          ["windows-2022"]
         type: string
       python_versions:
         required: false
