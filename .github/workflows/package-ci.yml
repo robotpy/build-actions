@@ -116,16 +116,17 @@ jobs:
       shell: bash
       id: ccache
       run: |
-        if [[ "${{ runner.os }}" == "Windows" ]]; then
-          echo "VARIANT=sccache" >> $GITHUB_OUTPUT
-          echo "RPYBUILD_CC_LAUNCHER=sccache" >> $GITHUB_ENV
-        else
+        #if [[ "${{ runner.os }}" == "Windows" ]]; then
+        #  echo "VARIANT=sccache" >> $GITHUB_OUTPUT
+        #  echo "RPYBUILD_CC_LAUNCHER=sccache" >> $GITHUB_ENV
+        #else
           echo "VARIANT=ccache" >> $GITHUB_OUTPUT
           echo "RPYBUILD_CC_LAUNCHER=ccache" >> $GITHUB_ENV
-        fi
+        #fi
 
     - name: Setup ccache
-      uses: hendrikmuhs/ccache-action@v1.2.11
+      # uses: hendrikmuhs/ccache-action@v1.2.11
+      uses: robotpy/ccache-action@fork
       with:
           key: ${{ matrix.os }}-${{ matrix.python_version }}
           variant: ${{ steps.ccache.outputs.variant }}
@@ -199,7 +200,8 @@ jobs:
 
     - run: apt-get update
     - name: Setup ccache
-      uses: hendrikmuhs/ccache-action@v1.2.11
+      # uses: hendrikmuhs/ccache-action@v1.2.11
+      uses: robotpy/ccache-action@fork
       with:
           key: ${{ matrix.os.container }}
           variant: ccache
