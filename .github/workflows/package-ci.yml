@@ -135,7 +135,7 @@ jobs:
     - uses: robotpy/build-actions/install-build-deps@v2024
     - shell: bash
       run: |
-        python -m pip install git+https://github.com/ThadHouse/setuptools@msvcproperlookup
+        python -m pip install git+https://github.com/ThadHouse/setuptools@msvcdebug
     - uses: robotpy/build-actions/build-wheel@v2024
       with:
         osx_target: ${{ inputs.osx_target }}
