@@ -114,8 +114,8 @@ jobs:
 
     - name: Setup msvc version
       uses: ilammy/msvc-dev-cmd@v1
-      with:
-        toolset: "14.39"
+      # with:
+      #   toolset: "14.39"
 
     - name: Set ccache variant
       shell: bash
