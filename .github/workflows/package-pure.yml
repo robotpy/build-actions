@@ -20,7 +20,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: psf/black@stable
   
   #
@@ -30,15 +30,15 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: 3.8
 
     - run: pipx run build
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist
@@ -62,14 +62,14 @@ jobs:
         architecture: [x64]
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python_version }}
         architecture: ${{ matrix.architecture }}
     
     - name: Download build artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: dist
         path: dist
@@ -89,7 +89,7 @@ jobs:
 
     steps:
     - name: Download build artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: dist
         path: dist
