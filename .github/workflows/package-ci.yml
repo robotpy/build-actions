@@ -191,7 +191,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
     - name: Set ccache env
       shell: bash
