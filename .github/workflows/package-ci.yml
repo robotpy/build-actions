@@ -213,6 +213,12 @@ jobs:
         /build/venv/bin/cross-pip --disable-pip-version-check install -U "setuptools==63.4.3; python_version < '3.12'"
         /build/venv/bin/cross-pip --disable-pip-version-check install -U wheel==0.41.2
 
+    # See https://github.com/pallets/markupsafe/issues/475
+    - name: Install MarkupSafe
+      shell: bash
+      run: |
+        /build/venv/bin/cross-pip install --no-build-isolation "markupsafe; python_version < '3.12'"
+
     - uses: robotpy/build-actions/install-robotpy-build@v2025
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
@@ -234,12 +240,6 @@ jobs:
       run: |
         pwd
         /usr/bin/git config --global --add safe.directory $(pwd)
-
-    # See https://github.com/pallets/markupsafe/issues/475
-    - name: Install MarkupSafe
-      shell: bash
-      run: |
-        /build/venv/bin/cross-pip install --no-build-isolation "markupsafe; python_version < '3.12'"
 
     - uses: robotpy/build-actions/build-wheel@v2025
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
