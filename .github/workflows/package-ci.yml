@@ -191,7 +191,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
     - name: Set ccache env
       shell: bash
@@ -214,11 +214,11 @@ jobs:
         /build/venv/bin/cross-pip --disable-pip-version-check install -U wheel==0.41.2
 
     - uses: robotpy/build-actions/install-robotpy-build@v2025
-      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
     - uses: robotpy/build-actions/install-build-deps@v2025
-      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
 
@@ -236,12 +236,12 @@ jobs:
         /usr/bin/git config --global --add safe.directory $(pwd)
 
     - uses: robotpy/build-actions/build-wheel@v2025
-      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
 
     - uses: actions/upload-artifact@v4
-      if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         name: cross-${{ matrix.os.name }}
         path: dist
