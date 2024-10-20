@@ -269,7 +269,7 @@ jobs:
         verify-metadata: false
         user: ${{ secrets.WPI_ARTIFACTORY_USERNAME }}
         password: ${{ secrets.WPI_ARTIFACTORY_TOKEN }}
-        repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/${{ inputs.artifactory_repo_type }}-python-release-2024-local
+        repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/${{ inputs.artifactory_repo_type }}-python-release-2025-local
 
 
   publish-pypi:
