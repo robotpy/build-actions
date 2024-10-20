@@ -30,12 +30,12 @@ on:
       matrix_os:
         required: false
         default: >-
-          ["ubuntu-22.04", "macos-12", "windows-2022"]
+          ["ubuntu-22.04", "macos-13", "windows-2022"]
         type: string
       python_versions:
         required: false
         default: >-
-          ["3.8", "3.9", "3.10", "3.11", "3.12"]
+          ["3.9", "3.10", "3.11", "3.12", "3.13"]
         type: string
       fail_fast:
         required: false
@@ -89,7 +89,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: psf/black@stable
 
   #
@@ -102,13 +102,13 @@ jobs:
     strategy:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       fail-fast: ${{ inputs.fail_fast }}
-      matrix: 
+      matrix:
         os: ${{ fromJSON(inputs.matrix_os) }}
         python_version: ${{ fromJson(inputs.python_versions) }}
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python_version }}
 
@@ -131,23 +131,23 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.python_version }}
           variant: ${{ steps.ccache.outputs.variant }}
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2024
-    - uses: robotpy/build-actions/install-build-deps@v2024
-    - uses: robotpy/build-actions/build-wheel@v2024
+    - uses: robotpy/build-actions/install-robotpy-build@v2025
+    - uses: robotpy/build-actions/install-build-deps@v2025
+    - uses: robotpy/build-actions/build-wheel@v2025
       with:
         osx_target: ${{ inputs.osx_target }}
 
-    - uses: robotpy/build-actions/test-native-wheel@v2024
+    - uses: robotpy/build-actions/test-native-wheel@v2025
 
-    - uses: robotpy/build-actions/validate-sphinx@v2024
+    - uses: robotpy/build-actions/validate-sphinx@v2025
       if: |
         inputs.enable_sphinx_check && inputs.enable_rtd &&
         matrix.python_version == '3.11' && runner.os == 'Linux' &&
         github.event_name == 'pull_request'
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
-        name: "dist-${{ runner.os }}"
+        name: "pypi-${{ runner.os }}-${{ matrix.python_version }}"
         path: dist
 
   #
@@ -161,36 +161,36 @@ jobs:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       matrix:
         os:
-        - container: wpilib/roborio-cross-ubuntu:2024-22.04-py312
+        - container: wpilib/roborio-cross-ubuntu:2025-22.04-py313
           name: roborio
 
-        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py38
-          name: raspbian
-        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py39
-          name: raspbian
-        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py310
-          name: raspbian
-        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py311
-          name: raspbian
-        - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04-py312
-          name: raspbian
-        
-        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py38
-          name: raspbian
-        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py39
-          name: raspbian
-        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py310
-          name: raspbian
-        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py311
-          name: raspbian
-        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py312
-          name: raspbian
+        - container: wpilib/raspbian-cross-ubuntu:2025-bullseye-22.04-py39
+          name: raspbian-py39
+        - container: wpilib/raspbian-cross-ubuntu:2025-bullseye-22.04-py310
+          name: raspbian-py310
+        - container: wpilib/raspbian-cross-ubuntu:2025-bullseye-22.04-py311
+          name: raspbian-py311
+        - container: wpilib/raspbian-cross-ubuntu:2025-bullseye-22.04-py312
+          name: raspbian-py312
+        - container: wpilib/raspbian-cross-ubuntu:2025-bullseye-22.04-py313
+          name: raspbian-py313
+
+        - container: wpilib/aarch64-cross-ubuntu:2025-bullseye-22.04-py39
+          name: raspbian-aarch64-py39
+        - container: wpilib/aarch64-cross-ubuntu:2025-bullseye-22.04-py310
+          name: raspbian-aarch64-py310
+        - container: wpilib/aarch64-cross-ubuntu:2025-bullseye-22.04-py311
+          name: raspbian-aarch64-py311
+        - container: wpilib/aarch64-cross-ubuntu:2025-bullseye-22.04-py312
+          name: raspbian-aarch64-py312
+        - container: wpilib/aarch64-cross-ubuntu:bullseye-22.04-py313
+          name: raspbian-aarch64-py313
 
     container:
       image: "${{ matrix.os.container }}"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
     - name: Set ccache env
@@ -213,11 +213,11 @@ jobs:
         /build/venv/bin/cross-pip --disable-pip-version-check install -U "setuptools==63.4.3; python_version < '3.12'"
         /build/venv/bin/cross-pip --disable-pip-version-check install -U wheel==0.41.2
 
-    - uses: robotpy/build-actions/install-robotpy-build@v2024
+    - uses: robotpy/build-actions/install-robotpy-build@v2025
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
-    - uses: robotpy/build-actions/install-build-deps@v2024
+    - uses: robotpy/build-actions/install-build-deps@v2025
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
@@ -235,15 +235,15 @@ jobs:
         pwd
         /usr/bin/git config --global --add safe.directory $(pwd)
 
-    - uses: robotpy/build-actions/build-wheel@v2024
+    - uses: robotpy/build-actions/build-wheel@v2025
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: (inputs.enable_raspbian && matrix.os.name == 'raspbian') || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
-        name: dist-${{ matrix.os.name }}
+        name: cross-${{ matrix.os.name }}
         path: dist
 
   #
@@ -256,17 +256,12 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
-    - uses: actions/download-artifact@v3
-      if: inputs.enable_roborio
+    - if: inputs.enable_roborio || inputs.enable_raspbian
+      uses: actions/download-artifact@v4
       with:
-        name: dist-roborio
+        pattern: cross-*
         path: dist/
-
-    - uses: actions/download-artifact@v3
-      if: inputs.enable_raspbian
-      with:
-        name: dist-raspbian
-        path: dist/
+        merge-multiple: true
 
     - if: inputs.enable_roborio || inputs.enable_raspbian
       uses: pypa/gh-action-pypi-publish@release/v1
@@ -283,50 +278,17 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v3
-      if: ${{ contains(inputs.matrix_os, 'windows-2019' ) }}
+    - uses: actions/download-artifact@v4
       with:
-        name: dist-Windows
+        pattern: pypi-*
         path: dist/
-    
-    - uses: actions/download-artifact@v3
-      if: ${{ contains(inputs.matrix_os, 'windows-2022' ) }}
-      with:
-        name: dist-Windows
-        path: dist/
+        merge-multiple: true
 
-    - uses: actions/download-artifact@v3
-      if: ${{ contains(inputs.matrix_os, 'macos-10.15' ) }}
+    - uses: actions/setup-python@v5
       with:
-        name: dist-macOS
-        path: dist/
-
-    - uses: actions/download-artifact@v3
-      if: ${{ contains(inputs.matrix_os, 'macos-11' ) }}
-      with:
-        name: dist-macOS
-        path: dist/
-    
-    - uses: actions/download-artifact@v3
-      if: ${{ contains(inputs.matrix_os, 'macos-12' ) }}
-      with:
-        name: dist-macOS
-        path: dist/
-
-    - uses: actions/download-artifact@v3
-      if: ${{ contains(inputs.matrix_os, 'ubuntu-22.04' ) }}
-      with:
-        name: dist-Linux
-        path: dist/
-
-    - uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-
-    - uses: robotpy/build-actions/install-robotpy-build@v2024
-    - uses: robotpy/build-actions/build-sdist@v2024
+        python-version: "3.11"
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
@@ -346,7 +308,7 @@ jobs:
       shell: bash
       run: sleep 60
     - name: Ping readthedocs
-      uses: robotpy/build-actions/ping-rtd@v2024
+      uses: robotpy/build-actions/ping-rtd@v2025
       with:
         token: ${{ secrets.RTD_TOKEN }}
         webhook: ${{ secrets.RTD_WEBHOOK }}
@@ -357,6 +319,6 @@ jobs:
   #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
   #   steps:
-  #   - uses: robotpy/build-actions/ping-meta@v2024
+  #   - uses: robotpy/build-actions/ping-meta@v2025
   #     with:
   #       token: ${{ secrets.META_REPO_ACCESS_TOKEN }}
