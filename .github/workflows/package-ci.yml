@@ -186,22 +186,20 @@ jobs:
     # See https://github.com/pallets/markupsafe/issues/475
     - name: Install MarkupSafe
       shell: bash
+      if: inputs.enable_raspbian
       run: |
-        /build/venv/bin/cross-pip install --no-build-isolation "markupsafe; python_version < '3.12'"
+        python -m pip install --no-build-isolation "markupsafe; python_version < '3.12'"
 
     - name: Install numpy (needed for stubgen)
       shell: bash
+      if: inputs.enable_raspbian
       run: |
         python -m pip --disable-pip-version-check install numpy
 
     - uses: robotpy/build-actions/install-robotpy-build@v2025
       if: inputs.enable_raspbian
-      with:
-        python: /build/venv/bin/cross-python
     - uses: robotpy/build-actions/install-build-deps@v2025
       if: inputs.enable_raspbian
-      with:
-        python: /build/venv/bin/cross-python
 
     - name: Show installed packages
       shell: bash
