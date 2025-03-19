@@ -201,11 +201,6 @@ jobs:
     - uses: robotpy/build-actions/install-build-deps@v2025
       if: inputs.enable_raspbian
 
-    - name: Show installed packages
-      shell: bash
-      run: |
-        python -m pip list
-
     - name: setup env
       shell: bash
       run: |
