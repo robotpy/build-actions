@@ -17,14 +17,17 @@ runs:
       fi
 
   - name: Install meson
+    shell: bash
     run: |
       /build/venv/bin/cross-pip --disable-pip-version-check install meson
 
   - name: Install ninja
+    shell: bash
     run: |
       /build/venv/bin/build-pip --disable-pip-version-check install ninja
 
   - name: Install pkgconf-pypi
+    shell: bash
     run: |
       /build/venv/bin/build-pip --disable-pip-version-check download pkgconf
       mv pkgconf-*.whl "$(echo pkgconf-*.whl | sed -E 's/(pkgconf-[^-]+-[^-]+)-.*/\1-none-any.whl/')"
@@ -32,4 +35,5 @@ runs:
       rm pkgconf-*.whl
 
   - name: Update PATH to include build tools
+    shell: bash
     run: echo /build/venv/cross/bin:/build/venv/build/bin >> $GITHUB_PATH
