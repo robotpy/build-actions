@@ -1,6 +1,6 @@
 [binaries]
-c = 'arm-frc2025-linux-gnueabi-gcc'
-cpp = 'arm-frc2025-linux-gnueabi-g++'
+c = ['ccache', 'arm-frc2025-linux-gnueabi-gcc']
+cpp = ['ccache', 'arm-frc2025-linux-gnueabi-g++']
 ar = 'arm-frc2025-linux-gnueabi-ar'
 strip = 'arm-frc2025-linux-gnueabi-strip'
 gfortran = 'arm-frc2025-linux-gnueabi-gfortran'
