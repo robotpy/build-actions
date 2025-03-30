@@ -1,0 +1,35 @@
+name: setup-cross-meson
+description: Sets up meson for cross compilation
+runs:
+  using: composite
+  steps:
+  - name: Install cross file
+    shell: bash
+    run: |
+      mkdir -p ~/.local/share/meson/cross
+      if which arm-frc2025-linux-gnueabi-g++; then
+        cp roborio.txt ~/.local/share/meson/cross/cross.txt
+      elif which armv6-bookworm-linux-gnueabihf-g++; then
+        cp bookworm.txt ~/.local/share/meson/cross/cross.txt
+      else
+        echo "No known toolchain found"
+        exit 1
+      fi
+
+  - name: Install meson
+    run: |
+      /build/venv/bin/cross-pip --disable-pip-version-check install meson
+
+  - name: Install ninja
+    run: |
+      /build/venv/bin/build-pip --disable-pip-version-check install ninja
+
+  - name: Install pkgconf-pypi
+    run: |
+      /build/venv/bin/build-pip --disable-pip-version-check download pkgconf
+      mv pkgconf-*.whl "$(echo pkgconf-*.whl | sed -E 's/(pkgconf-[^-]+-[^-]+)-.*/\1-none-any.whl/')"
+      /build/venv/bin/cross-pip --disable-pip-version-check install pkgconf-*.whl
+      rm pkgconf-*.whl
+
+  - name: Update PATH to include build tools
+    run: echo /build/venv/cross/bin:/build/venv/build/bin >> $GITHUB_PATH
