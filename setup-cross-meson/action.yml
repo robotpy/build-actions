@@ -8,9 +8,9 @@ runs:
     run: |
       mkdir -p ~/.local/share/meson/cross
       if which arm-frc2025-linux-gnueabi-g++; then
-        cp roborio.txt ~/.local/share/meson/cross/cross.txt
+        cp ${{ github.action_path }}/roborio.txt ~/.local/share/meson/cross/cross.txt
       elif which armv6-bookworm-linux-gnueabihf-g++; then
-        cp bookworm.txt ~/.local/share/meson/cross/cross.txt
+        cp ${{ github.action_path }}/bookworm.txt ~/.local/share/meson/cross/cross.txt
       else
         echo "No known toolchain found"
         exit 1
