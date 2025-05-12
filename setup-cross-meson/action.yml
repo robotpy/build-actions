@@ -25,7 +25,10 @@ runs:
   - name: Install ninja
     shell: bash
     run: |
-      /build/venv/bin/build-pip --disable-pip-version-check install ninja
+      /build/venv/bin/build-pip --disable-pip-version-check download ninja
+      mv ninja-*.whl "$(echo ninja-*.whl | sed -E 's/(ninja-[^-]+-[^-]+)-.*/\1-none-any.whl/')"
+      /build/venv/bin/cross-pip --disable-pip-version-check install ninja-*.whl
+      rm ninja-*.whl
 
   - name: Install pkgconf-pypi
     shell: bash
