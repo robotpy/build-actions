@@ -118,6 +118,14 @@ jobs:
         architecture: x64
       if: runner.os == 'Windows'
 
+    - name: Configure ccache for MSVC
+      shell: bash
+      # https://github.com/mesonbuild/meson/issues/10423
+      run: |
+        echo "CC=ccache.exe cl" >> $GITHUB_ENV
+        echo "CXX=ccache.exe cl" >> $GITHUB_ENV
+      if: runner.os == 'Windows'
+
     - name: Set ccache variant
       shell: bash
       id: ccache
