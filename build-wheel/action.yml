@@ -16,6 +16,16 @@ inputs:
 runs:
   using: composite
   steps:
+  - name: Set default shell
+    shell: bash
+    id: default_shell
+    run: |
+      if [[ "${{ runner.os }}" == "Windows" ]]; then
+        echo "SHELL=pwsh" >> $GITHUB_OUTPUT
+      else
+        echo "SHELL=bash" >> $GITHUB_OUTPUT
+      fi
+
   - name: Setup default OSX deployment target
     shell: bash
     run: |
@@ -27,12 +37,15 @@ runs:
     if: ${{ inputs.osx_target != '' }}
   
   - name: Show installed packages
+    shell: ${{ steps.default_shell.outputs.shell }}
     run: |
       ${{ inputs.python }} -m pip list
 
   - name: Run build
+    shell: ${{ steps.default_shell.outputs.shell }}
     run: |
       ${{ inputs.python }} -m build --no-isolation ${{ inputs.build_args }}
+
   - shell: bash
     run: |
       ORIG_PLAT_TAG="linux_x86_64"
