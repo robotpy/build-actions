@@ -1,0 +1,10 @@
+name: "install-semiwrap"
+description: "Installs semiwrap"
+inputs:
+  python:
+    description: "python executable"
+    required: false
+    default: python
+runs:
+  using: "node24"
+  main: dist/index.js
