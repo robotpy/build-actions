@@ -27,12 +27,10 @@ runs:
     run: |
       ${{ inputs.python }} -m pip list
 
-  - shell: bash
+  - name: Run build
+    shell: bash
     run: |
-      ${{ inputs.python }} setup.py bdist_wheel
-    env:
-      RPYBUILD_PARALLEL: 1
-      RPYBUILD_STRIP_LIBPYTHON: 1
+      ${{ inputs.python }} -m build --no-isolation
   - shell: bash
     run: |
       ORIG_PLAT_TAG="linux_x86_64"

@@ -10,4 +10,7 @@ runs:
   steps:
   - shell: bash
     run: |
-      ${{ inputs.python }} -m robotpy_build build-dep --install
+      ${{ inputs.python }} -m pip install build
+  - shell: bash
+    run: |
+      ${{ inputs.python }} -m semiwrap build-dep --install
