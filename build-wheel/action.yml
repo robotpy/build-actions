@@ -19,7 +19,7 @@ runs:
   - name: Setup default OSX deployment target
     shell: bash
     run: |
-      echo "MACOSX_DEPLOYMENT_TARGET=11.7" >> $GITHUB_ENV
+      echo "MACOSX_DEPLOYMENT_TARGET=13.3" >> $GITHUB_ENV
   - name: Setup override OSX deployment target
     shell: bash
     run: |
@@ -27,12 +27,10 @@ runs:
     if: ${{ inputs.osx_target != '' }}
   
   - name: Show installed packages
-    shell: bash
     run: |
       ${{ inputs.python }} -m pip list
 
   - name: Run build
-    shell: bash
     run: |
       ${{ inputs.python }} -m build --no-isolation ${{ inputs.build_args }}
   - shell: bash
