@@ -112,6 +112,12 @@ jobs:
       with:
         python-version: ${{ matrix.python_version }}
 
+    - name: Setup MSVC
+      uses: bus1/cabuild/action/msdevshell@e22aba57d6e74891d059d66501b6b5aed8123c4d  # v1
+      with:
+        architecture: x64
+      if: runner.os == 'Windows'
+
     - name: Set ccache variant
       shell: bash
       id: ccache
