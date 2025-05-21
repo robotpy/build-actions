@@ -151,13 +151,13 @@ jobs:
         matrix.python_version == '3.11' && runner.os == 'Linux' &&
         github.event_name == 'pull_request'
 
-    - if: matrix.os != "macos-14"
+    - if: matrix.os != 'macos-14'
       uses: actions/upload-artifact@v4
       with:
         name: "pypi-${{ runner.os }}-${{ matrix.python_version }}"
         path: dist
 
-    - if: matrix.os == "macos-14"
+    - if: matrix.os == 'macos-14'
       uses: actions/upload-artifact@v4
       with:
         name: "pypi-${{ runner.os }}-arm-${{ matrix.python_version }}"
