@@ -164,7 +164,8 @@ jobs:
     container: python:${{ matrix.python_version }}-bookworm
 
     steps:
-    - run: apt-get update && apt-get install -y libgl1
+    - name: Setup dependencies
+      run: apt-get update && apt-get install -y libgl1 ninja-build
 
     - uses: actions/checkout@v4
       if: inputs.enable_raspbian
@@ -275,6 +276,7 @@ jobs:
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
+        build_args: --config-settings=setup-args=--cross-file=cross.txt
 
     - uses: actions/upload-artifact@v4
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')

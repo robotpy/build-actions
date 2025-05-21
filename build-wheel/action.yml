@@ -9,6 +9,10 @@ inputs:
     description: Target OSX platform
     required: false
     default:
+  build_args:
+    description: Extra build args
+    required: false
+    default:
 runs:
   using: composite
   steps:
@@ -30,7 +34,7 @@ runs:
   - name: Run build
     shell: bash
     run: |
-      ${{ inputs.python }} -m build --no-isolation
+      ${{ inputs.python }} -m build --no-isolation ${{ inputs.build_args }}
   - shell: bash
     run: |
       ORIG_PLAT_TAG="linux_x86_64"
