@@ -1,0 +1,37 @@
+name: install-dummy-package
+description: Installs an empty package so that pip doesn't try to install it
+
+inputs:
+  package_name:
+    description: "Name of the package to create"
+    required: true
+  python:
+    description: "python executable"
+    required: false
+    default: python
+  version:
+    descripton: "version"
+    required: false
+    default: "0.1"
+runs:
+  using: "composite"
+  steps:
+    - name: Create and install dummy package
+      shell: bash
+      run: |
+        PKGDIR=$(mktemp -d)
+        cat > ${PKGDIR}/pyproject.toml <<EOF
+        [build-system]
+        requires = ["hatchling"]
+        build-backend = "hatchling.build"
+
+        [project]
+        name = "${{ inputs.package_name }}"
+        version = "${{ inputs.version }}"
+
+        [tool.hatch.build.targets.wheel]
+        bypass-selection = true
+        EOF
+
+        ${{ inputs.python }} -m pip install ${PKGDIR}
+        rm -rf ${PKGDIR}

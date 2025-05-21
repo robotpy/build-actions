@@ -1,0 +1,43 @@
+name: setup-cross-meson
+description: Sets up meson for cross compilation
+runs:
+  using: composite
+  steps:
+  - name: Install cross file
+    shell: bash
+    run: |
+      set -x
+      mkdir -p ~/.local/share/meson/cross
+      if which arm-frc2025-linux-gnueabi-g++; then
+        cp "${GITHUB_ACTION_PATH}/roborio.txt" ~/.local/share/meson/cross/cross.txt
+      elif which armv6-bookworm-linux-gnueabihf-g++; then
+        cp "${GITHUB_ACTION_PATH}/bookworm.txt" ~/.local/share/meson/cross/cross.txt
+      else
+        echo "No known toolchain found"
+        exit 1
+      fi
+
+  - name: Install meson
+    shell: bash
+    run: |
+      /build/venv/bin/cross-pip --disable-pip-version-check install meson
+
+  - name: Install ninja
+    shell: bash
+    run: |
+      /build/venv/bin/build-pip --disable-pip-version-check download ninja
+      mv ninja-*.whl "$(echo ninja-*.whl | sed -E 's/(ninja-[^-]+-[^-]+)-.*/\1-none-any.whl/')"
+      /build/venv/bin/cross-pip --disable-pip-version-check install ninja-*.whl
+      rm ninja-*.whl
+
+  - name: Install pkgconf-pypi
+    shell: bash
+    run: |
+      /build/venv/bin/build-pip --disable-pip-version-check download pkgconf
+      mv pkgconf-*.whl "$(echo pkgconf-*.whl | sed -E 's/(pkgconf-[^-]+-[^-]+)-.*/\1-none-any.whl/')"
+      /build/venv/bin/cross-pip --disable-pip-version-check install pkgconf-*.whl
+      rm pkgconf-*.whl
+
+  - name: Update PATH to include build tools
+    shell: bash
+    run: echo /build/venv/cross/bin:/build/venv/build/bin >> $GITHUB_PATH
