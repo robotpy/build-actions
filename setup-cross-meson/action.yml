@@ -12,6 +12,8 @@ runs:
         cp "${GITHUB_ACTION_PATH}/roborio.txt" ~/.local/share/meson/cross/cross.txt
       elif which armv6-bookworm-linux-gnueabihf-g++; then
         cp "${GITHUB_ACTION_PATH}/bookworm.txt" ~/.local/share/meson/cross/cross.txt
+      elif which aarch64-bookworm-linux-gnu-g++; then
+        cp "${GITHUB_ACTION_PATH}/systemcore.txt" ~/.local/share/meson/cross/cross.txt
       else
         echo "No known toolchain found"
         exit 1

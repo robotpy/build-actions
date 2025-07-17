@@ -1,0 +1,14 @@
+[binaries]
+c = ['ccache', 'aarch64-bookworm-linux-gnu-gcc']
+cpp = ['ccache', 'aarch64-bookworm-linux-gnu-g++']
+ar = 'aarch64-bookworm-linux-gnu-ar'
+strip = 'aarch64-bookworm-linux-gnu-strip'
+gfortran = 'aarch64-bookworm-linux-gnu-gfortran'
+
+pkg-config = '/build/venv/cross/bin/pkgconf'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'aarch64'
+endian = 'little'
