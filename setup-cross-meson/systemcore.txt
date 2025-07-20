@@ -14,5 +14,5 @@ cpu = 'aarch64'
 endian = 'little'
 
 [built-in options]
-c_args = ['-D__FRC_SYSTEMCORE__']
-cpp_args = ['-D__FRC_SYSTEMCORE__']
+c_args = ['-D__FRC_SYSTEMCORE__', '-Wno-psabi']
+cpp_args = ['-D__FRC_SYSTEMCORE__', '-Wno-psabi']
