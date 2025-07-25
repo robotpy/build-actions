@@ -19,7 +19,7 @@ on:
         required: false
         default: true
         type: boolean
-      enable_roborio:
+      enable_systemcore:
         required: false
         default: true
         type: boolean
@@ -233,7 +233,7 @@ jobs:
         path: dist
 
   #
-  # Build roboRIO/raspbian wheels
+  # Build systemcore/raspbian wheels
   #
 
   cross-build:
@@ -243,14 +243,14 @@ jobs:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       matrix:
         os:
-        - container: wpilib/roborio-cross-ubuntu:2025-22.04-py313
-          name: roborio
+        - container: wpilib/systemcore-cross-ubuntu:2025-22.04-py313
+          name: systemcore
 
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-22.04-py311
+        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-24.04-py311
           name: raspbian-py311
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-22.04-py312
+        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-24.04-py312
           name: raspbian-py312
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-22.04-py313
+        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-24.04-py313
           name: raspbian-py313
 
     container:
@@ -258,7 +258,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_systemcore && matrix.os.name == 'systemcore')
 
     - name: Setup cross environment for meson
       uses: robotpy/build-actions/setup-cross-meson@v2027
@@ -272,11 +272,11 @@ jobs:
           variant: ccache
 
     - uses: robotpy/build-actions/install-semiwrap@v2027
-      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_systemcore && matrix.os.name == 'systemcore')
       with:
         python: /build/venv/bin/cross-python
     - uses: robotpy/build-actions/install-build-deps@v2027
-      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_systemcore && matrix.os.name == 'systemcore')
       with:
         python: /build/venv/bin/cross-python
 
@@ -294,13 +294,13 @@ jobs:
         /usr/bin/git config --global --add safe.directory $(pwd)
 
     - uses: robotpy/build-actions/build-wheel@v2027
-      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_systemcore && matrix.os.name == 'systemcore')
       with:
         python: /build/venv/bin/cross-python
         build_args: --config-setting=setup-args=--cross-file=cross.txt
 
     - uses: actions/upload-artifact@v4
-      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_systemcore && matrix.os.name == 'systemcore')
       with:
         name: cross-${{ matrix.os.name }}
         path: dist
@@ -315,14 +315,14 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
-    - if: inputs.enable_roborio || inputs.enable_raspbian
+    - if: inputs.enable_systemcore || inputs.enable_raspbian
       uses: actions/download-artifact@v4
       with:
         pattern: cross-*
         path: dist/
         merge-multiple: true
 
-    - if: inputs.enable_roborio || inputs.enable_raspbian
+    - if: inputs.enable_systemcore || inputs.enable_raspbian
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verify-metadata: false
