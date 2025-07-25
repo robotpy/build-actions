@@ -145,15 +145,15 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.python_version }}
           variant: ${{ steps.ccache.outputs.variant }}
 
-    - uses: robotpy/build-actions/install-semiwrap@v2025
-    - uses: robotpy/build-actions/install-build-deps@v2025
-    - uses: robotpy/build-actions/build-wheel@v2025
+    - uses: robotpy/build-actions/install-semiwrap@v2027
+    - uses: robotpy/build-actions/install-build-deps@v2027
+    - uses: robotpy/build-actions/build-wheel@v2027
       with:
         osx_target: ${{ inputs.osx_target }}
 
-    - uses: robotpy/build-actions/test-native-wheel@v2025
+    - uses: robotpy/build-actions/test-native-wheel@v2027
 
-    - uses: robotpy/build-actions/validate-sphinx@v2025
+    - uses: robotpy/build-actions/validate-sphinx@v2027
       if: |
         inputs.enable_sphinx_check && inputs.enable_rtd &&
         matrix.python_version == '3.11' && runner.os == 'Linux' &&
@@ -211,9 +211,9 @@ jobs:
       run: |
         python -m pip --disable-pip-version-check install numpy
 
-    - uses: robotpy/build-actions/install-semiwrap@v2025
+    - uses: robotpy/build-actions/install-semiwrap@v2027
       if: inputs.enable_raspbian
-    - uses: robotpy/build-actions/install-build-deps@v2025
+    - uses: robotpy/build-actions/install-build-deps@v2027
       if: inputs.enable_raspbian
 
     - name: setup env
@@ -223,7 +223,7 @@ jobs:
         echo "SCCACHE_WEBDAV_PASSWORD=${{ secrets.WPI_ARTIFACTORY_TOKEN }}" >> $GITHUB_ENV
         
 
-    - uses: robotpy/build-actions/build-wheel@v2025
+    - uses: robotpy/build-actions/build-wheel@v2027
       if: inputs.enable_raspbian
     
     - uses: actions/upload-artifact@v4
@@ -261,7 +261,7 @@ jobs:
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
     - name: Setup cross environment for meson
-      uses: robotpy/build-actions/setup-cross-meson@v2025
+      uses: robotpy/build-actions/setup-cross-meson@v2027
 
     - run: apt-get update
     - name: Setup ccache
@@ -271,11 +271,11 @@ jobs:
           key: ${{ matrix.os.container }}
           variant: ccache
 
-    - uses: robotpy/build-actions/install-semiwrap@v2025
+    - uses: robotpy/build-actions/install-semiwrap@v2027
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
-    - uses: robotpy/build-actions/install-build-deps@v2025
+    - uses: robotpy/build-actions/install-build-deps@v2027
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
@@ -293,7 +293,7 @@ jobs:
         pwd
         /usr/bin/git config --global --add safe.directory $(pwd)
 
-    - uses: robotpy/build-actions/build-wheel@v2025
+    - uses: robotpy/build-actions/build-wheel@v2027
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
@@ -367,7 +367,7 @@ jobs:
       shell: bash
       run: sleep 60
     - name: Ping readthedocs
-      uses: robotpy/build-actions/ping-rtd@v2025
+      uses: robotpy/build-actions/ping-rtd@v2027
       with:
         token: ${{ secrets.RTD_TOKEN }}
         webhook: ${{ secrets.RTD_WEBHOOK }}
@@ -378,6 +378,6 @@ jobs:
   #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
   #   steps:
-  #   - uses: robotpy/build-actions/ping-meta@v2025
+  #   - uses: robotpy/build-actions/ping-meta@v2027
   #     with:
   #       token: ${{ secrets.META_REPO_ACCESS_TOKEN }}

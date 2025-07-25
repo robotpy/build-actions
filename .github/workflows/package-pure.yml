@@ -74,9 +74,9 @@ jobs:
         name: dist
         path: dist
 
-    - uses: robotpy/build-actions/test-native-wheel@v2025
+    - uses: robotpy/build-actions/test-native-wheel@v2027
 
-    - uses: robotpy/build-actions/validate-sphinx@v2025
+    - uses: robotpy/build-actions/validate-sphinx@v2027
       if: inputs.enable_sphinx_check && matrix.python_version == '3.11' && startsWith(matrix.os, 'ubuntu-')
 
 
