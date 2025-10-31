@@ -52,13 +52,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2022, macos-13, ubuntu-24.04]
+        os: [windows-2022, macos-14, ubuntu-24.04]
         python_version:
-        - '3.9'
         - '3.10'
         - '3.11'
         - '3.12'
         - '3.13'
+        - '3.14'
         architecture: [x64]
 
     steps:
