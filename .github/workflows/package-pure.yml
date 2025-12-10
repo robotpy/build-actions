@@ -52,13 +52,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2022, macos-13, ubuntu-22.04]
+        os: [windows-2022, macos-14, ubuntu-22.04]
         python_version:
-        - '3.9'
         - '3.10'
         - '3.11'
         - '3.12'
         - '3.13'
+        - '3.14'
         architecture: [x64]
 
     steps:
@@ -74,9 +74,9 @@ jobs:
         name: dist
         path: dist
 
-    - uses: robotpy/build-actions/test-native-wheel@v2025
+    - uses: robotpy/build-actions/test-native-wheel@v2026
 
-    - uses: robotpy/build-actions/validate-sphinx@v2025
+    - uses: robotpy/build-actions/validate-sphinx@v2026
       if: inputs.enable_sphinx_check && matrix.python_version == '3.11' && startsWith(matrix.os, 'ubuntu-')
 
 

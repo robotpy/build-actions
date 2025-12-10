@@ -30,12 +30,12 @@ on:
       matrix_os:
         required: false
         default: >-
-          ["ubuntu-22.04", "macos-13", "macos-14", "windows-2022"]
+          ["ubuntu-22.04", "macos-15-intel", "macos-14", "windows-2022"]
         type: string
       python_versions:
         required: false
         default: >-
-          ["3.9", "3.10", "3.11", "3.12", "3.13"]
+          ["3.10", "3.11", "3.12", "3.13", "3.14"]
         type: string
       fail_fast:
         required: false
@@ -145,15 +145,15 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.python_version }}
           variant: ${{ steps.ccache.outputs.variant }}
 
-    - uses: robotpy/build-actions/install-semiwrap@v2025
-    - uses: robotpy/build-actions/install-build-deps@v2025
-    - uses: robotpy/build-actions/build-wheel@v2025
+    - uses: robotpy/build-actions/install-semiwrap@v2026
+    - uses: robotpy/build-actions/install-build-deps@v2026
+    - uses: robotpy/build-actions/build-wheel@v2026
       with:
         osx_target: ${{ inputs.osx_target }}
 
-    - uses: robotpy/build-actions/test-native-wheel@v2025
+    - uses: robotpy/build-actions/test-native-wheel@v2026
 
-    - uses: robotpy/build-actions/validate-sphinx@v2025
+    - uses: robotpy/build-actions/validate-sphinx@v2026
       if: |
         inputs.enable_sphinx_check && inputs.enable_rtd &&
         matrix.python_version == '3.11' && runner.os == 'Linux' &&
@@ -182,6 +182,7 @@ jobs:
         - '3.11'
         - '3.12'
         - '3.13'
+        - '3.14'
     container: python:${{ matrix.python_version }}-bookworm
 
     steps:
@@ -211,9 +212,9 @@ jobs:
       run: |
         python -m pip --disable-pip-version-check install numpy
 
-    - uses: robotpy/build-actions/install-semiwrap@v2025
+    - uses: robotpy/build-actions/install-semiwrap@v2026
       if: inputs.enable_raspbian
-    - uses: robotpy/build-actions/install-build-deps@v2025
+    - uses: robotpy/build-actions/install-build-deps@v2026
       if: inputs.enable_raspbian
 
     - name: setup env
@@ -223,7 +224,7 @@ jobs:
         echo "SCCACHE_WEBDAV_PASSWORD=${{ secrets.WPI_ARTIFACTORY_TOKEN }}" >> $GITHUB_ENV
         
 
-    - uses: robotpy/build-actions/build-wheel@v2025
+    - uses: robotpy/build-actions/build-wheel@v2026
       if: inputs.enable_raspbian
     
     - uses: actions/upload-artifact@v4
@@ -243,15 +244,17 @@ jobs:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       matrix:
         os:
-        - container: wpilib/roborio-cross-ubuntu:2025-22.04-py313
+        - container: wpilib/roborio-cross-ubuntu:2026-22.04-py313
           name: roborio
 
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-22.04-py311
+        - container: wpilib/raspbian-cross-ubuntu:2026-bookworm-22.04-py311
           name: raspbian-py311
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-22.04-py312
+        - container: wpilib/raspbian-cross-ubuntu:2026-bookworm-22.04-py312
           name: raspbian-py312
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-22.04-py313
+        - container: wpilib/raspbian-cross-ubuntu:2026-bookworm-22.04-py313
           name: raspbian-py313
+        - container: wpilib/raspbian-cross-ubuntu:2026-bookworm-22.04-py314
+          name: raspbian-py314
 
     container:
       image: "${{ matrix.os.container }}"
@@ -261,7 +264,7 @@ jobs:
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
     - name: Setup cross environment for meson
-      uses: robotpy/build-actions/setup-cross-meson@v2025
+      uses: robotpy/build-actions/setup-cross-meson@v2026
 
     - run: apt-get update
     - name: Setup ccache
@@ -271,11 +274,11 @@ jobs:
           key: ${{ matrix.os.container }}
           variant: ccache
 
-    - uses: robotpy/build-actions/install-semiwrap@v2025
+    - uses: robotpy/build-actions/install-semiwrap@v2026
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
-    - uses: robotpy/build-actions/install-build-deps@v2025
+    - uses: robotpy/build-actions/install-build-deps@v2026
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
@@ -293,7 +296,7 @@ jobs:
         pwd
         /usr/bin/git config --global --add safe.directory $(pwd)
 
-    - uses: robotpy/build-actions/build-wheel@v2025
+    - uses: robotpy/build-actions/build-wheel@v2026
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         python: /build/venv/bin/cross-python
@@ -328,7 +331,7 @@ jobs:
         verify-metadata: false
         user: ${{ secrets.WPI_ARTIFACTORY_USERNAME }}
         password: ${{ secrets.WPI_ARTIFACTORY_TOKEN }}
-        repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/${{ inputs.artifactory_repo_type }}-python-release-2025-local
+        repository-url: https://wpilib.jfrog.io/artifactory/api/pypi/${{ inputs.artifactory_repo_type }}-python-release-2026-local
 
 
   publish-pypi:
@@ -367,7 +370,7 @@ jobs:
       shell: bash
       run: sleep 60
     - name: Ping readthedocs
-      uses: robotpy/build-actions/ping-rtd@v2025
+      uses: robotpy/build-actions/ping-rtd@v2026
       with:
         token: ${{ secrets.RTD_TOKEN }}
         webhook: ${{ secrets.RTD_WEBHOOK }}
@@ -378,6 +381,6 @@ jobs:
   #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
   #   steps:
-  #   - uses: robotpy/build-actions/ping-meta@v2025
+  #   - uses: robotpy/build-actions/ping-meta@v2026
   #     with:
   #       token: ${{ secrets.META_REPO_ACCESS_TOKEN }}
