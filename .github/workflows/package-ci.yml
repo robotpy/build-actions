@@ -30,7 +30,7 @@ on:
       matrix_os:
         required: false
         default: >-
-          ["ubuntu-24.04", "macos-13", "macos-14", "windows-2022"]
+          ["ubuntu-24.04", "macos-15-intel", "macos-14", "windows-2022"]
         type: string
       python_versions:
         required: false
