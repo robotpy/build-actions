@@ -244,7 +244,7 @@ jobs:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       matrix:
         os:
-        - container: wpilib/roborio-cross-ubuntu:2026-22.04-py313
+        - container: wpilib/roborio-cross-ubuntu:2026-22.04-py314
           name: roborio
 
         - container: wpilib/raspbian-cross-ubuntu:2026-bookworm-22.04-py311
