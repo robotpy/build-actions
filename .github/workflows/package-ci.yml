@@ -274,9 +274,10 @@ jobs:
     - uses: robotpy/build-actions/install-semiwrap@v2027
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_systemcore && matrix.os.name == 'systemcore')
       with:
-        python: /build/venv/bin/cross-python
+        python: /build/venv/bin/build-python
+        cross-expose: /build/venv/bin/cross-expose
     - uses: robotpy/build-actions/install-build-deps@v2027
-      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_systemcore && matrix.os.name == 'systemcore')
+      if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'systemcore')
       with:
         python: /build/venv/bin/cross-python
 
