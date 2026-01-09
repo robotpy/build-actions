@@ -5,6 +5,10 @@ inputs:
     description: "python executable"
     required: false
     default: python
+  cross-expose:
+    description: "cross-expose"
+    required: false
+    default: ""
 runs:
   using: "node20"
   main: dist/index.js
