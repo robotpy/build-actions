@@ -44,7 +44,7 @@ runs:
   - name: Run build
     shell: ${{ steps.default_shell.outputs.shell }}
     run: |
-      ${{ inputs.python }} -m build --no-isolation ${{ inputs.build_args }}
+      ${{ inputs.python }} -m build -w --no-isolation ${{ inputs.build_args }}
 
   - shell: bash
     run: |
