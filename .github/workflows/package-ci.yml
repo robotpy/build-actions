@@ -35,7 +35,7 @@ on:
       python_versions:
         required: false
         default: >-
-          ["3.9", "3.10", "3.11", "3.12", "3.13"]
+          ["3.11", "3.12", "3.13", "3.14"]
         type: string
       fail_fast:
         required: false
