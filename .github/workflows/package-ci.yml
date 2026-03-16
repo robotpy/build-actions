@@ -89,7 +89,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - uses: psf/black@stable
 
   #
@@ -107,8 +107,8 @@ jobs:
         python_version: ${{ fromJson(inputs.python_versions) }}
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: actions/checkout@v6
+    - uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python_version }}
 
@@ -160,13 +160,13 @@ jobs:
         github.event_name == 'pull_request'
 
     - if: matrix.os != 'macos-14'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: "pypi-${{ runner.os }}-${{ matrix.python_version }}"
         path: dist
 
     - if: matrix.os == 'macos-14'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: "pypi-${{ runner.os }}-arm-${{ matrix.python_version }}"
         path: dist
@@ -189,7 +189,7 @@ jobs:
     - name: Setup dependencies
       run: apt-get update && apt-get install -y libgl1 ninja-build
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       if: inputs.enable_raspbian
 
 
@@ -227,7 +227,7 @@ jobs:
     - uses: robotpy/build-actions/build-wheel@v2026
       if: inputs.enable_raspbian
     
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       if: inputs.enable_raspbian
       with:
         name: "pypi-${{ runner.os }}-arm-${{ matrix.python_version }}"
@@ -260,7 +260,7 @@ jobs:
       image: "${{ matrix.os.container }}"
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
 
     - name: Setup cross environment for meson
@@ -303,7 +303,7 @@ jobs:
         python: /build/venv/bin/cross-python
         build_args: --config-setting=setup-args=--cross-file=cross.txt
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       if: (inputs.enable_raspbian && startsWith(matrix.os.name, 'raspbian')) || (inputs.enable_roborio && matrix.os.name == 'roborio')
       with:
         name: cross-${{ matrix.os.name }}
@@ -320,7 +320,7 @@ jobs:
 
     steps:
     - if: inputs.enable_roborio || inputs.enable_raspbian
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         pattern: cross-*
         path: dist/
@@ -341,15 +341,15 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         pattern: pypi-*
         path: dist/
         merge-multiple: true
 
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: "3.11"
 
