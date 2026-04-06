@@ -5,7 +5,7 @@ ar = 'aarch64-bookworm-linux-gnu-ar'
 strip = 'aarch64-bookworm-linux-gnu-strip'
 gfortran = 'aarch64-bookworm-linux-gnu-gfortran'
 
-pkg-config = '/build/venv/cross/bin/pkgconf'
+pkg-config = '/build/venv/cross/bin/pkgconf-pypi'
 
 [host_machine]
 system = 'linux'

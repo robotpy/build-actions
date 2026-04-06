@@ -5,7 +5,7 @@ ar = 'arm-frc2025-linux-gnueabi-ar'
 strip = 'arm-frc2025-linux-gnueabi-strip'
 gfortran = 'arm-frc2025-linux-gnueabi-gfortran'
 
-pkg-config = '/build/venv/cross/bin/pkgconf'
+pkg-config = '/build/venv/cross/bin/pkgconf-pypi'
 
 [host_machine]
 system = 'linux'
