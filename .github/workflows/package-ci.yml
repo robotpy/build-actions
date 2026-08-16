@@ -142,6 +142,7 @@ jobs:
         #fi
 
     - run: apt-get update
+      if: runner.os == 'Linux'
     - name: Setup ccache
       uses: hendrikmuhs/ccache-action@v1.2
       # uses: robotpy/ccache-action@fork
