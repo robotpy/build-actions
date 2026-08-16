@@ -105,10 +105,13 @@ jobs:
       matrix:
         os: ${{ fromJSON(inputs.matrix_os) }}
         python_version: ${{ fromJson(inputs.python_versions) }}
+    
+    container: ${{ startsWith(matrix.os, 'ubuntu-') && format('python:{0}-trixie', matrix.python_version) || '' }}
 
     steps:
     - uses: actions/checkout@v6
     - uses: actions/setup-python@v6
+      if: runner.os != 'Linux'
       with:
         python-version: ${{ matrix.python_version }}
 
@@ -182,7 +185,8 @@ jobs:
         - '3.11'
         - '3.12'
         - '3.13'
-    container: python:${{ matrix.python_version }}-bookworm
+        - '3.14'
+    container: python:${{ matrix.python_version }}-trixie
 
     steps:
     - name: Setup dependencies
@@ -243,15 +247,8 @@ jobs:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       matrix:
         os:
-        - container: wpilib/systemcore-cross-ubuntu:2026-24.04-py314
+        - container: wpilib/systemcore-cross-debian:2026-trixie-py314
           name: systemcore
-
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-24.04-py311
-          name: raspbian-py311
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-24.04-py312
-          name: raspbian-py312
-        - container: wpilib/raspbian-cross-ubuntu:2025-bookworm-24.04-py313
-          name: raspbian-py313
 
     container:
       image: "${{ matrix.os.container }}"
