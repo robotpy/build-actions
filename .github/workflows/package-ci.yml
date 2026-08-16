@@ -109,6 +109,10 @@ jobs:
     container: ${{ startsWith(matrix.os, 'ubuntu-') && format('python:{0}-trixie', matrix.python_version) || '' }}
 
     steps:
+    - name: Setup Linux dependencies
+      run: apt-get update && apt-get install -y libgl1 ninja-build
+      if: runner.os == 'Linux'
+
     - uses: actions/checkout@v6
     - uses: actions/setup-python@v6
       if: runner.os != 'Linux'
@@ -141,8 +145,6 @@ jobs:
           echo "RPYBUILD_CC_LAUNCHER=ccache" >> $GITHUB_ENV
         #fi
 
-    - run: apt-get update
-      if: runner.os == 'Linux'
     - name: Setup ccache
       uses: hendrikmuhs/ccache-action@v1.2
       # uses: robotpy/ccache-action@fork
