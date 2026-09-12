@@ -27,6 +27,10 @@ on:
         required: false
         default: ''
         type: string
+      windows_build_args:
+        required: false
+        default: ''
+        type: string
       matrix_os:
         required: false
         default: >-
@@ -157,6 +161,7 @@ jobs:
     - uses: robotpy/build-actions/build-wheel@v2027
       with:
         osx_target: ${{ inputs.osx_target }}
+        build_args: ${{ case(runner.os == 'Windows', inputs.windows_build_args, '') }}
 
     - uses: robotpy/build-actions/test-native-wheel@v2027
 
