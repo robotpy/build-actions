@@ -39,7 +39,7 @@ on:
       python_versions:
         required: false
         default: >-
-          ["3.11", "3.12", "3.13", "3.14"]
+          ["3.12", "3.13", "3.14", "3.15"]
         type: string
       fail_fast:
         required: false
@@ -249,7 +249,7 @@ jobs:
       max-parallel: ${{ fromJSON(needs.setup_concurrency.outputs.max-parallel).v }}
       matrix:
         os:
-        - container: wpilib/systemcore-cross-debian:2026-trixie-py314
+        - container: wpilib/systemcore-cross-debian:2026-trixie-py315
           name: systemcore
 
     container:
