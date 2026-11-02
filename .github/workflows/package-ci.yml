@@ -168,7 +168,7 @@ jobs:
     - uses: robotpy/build-actions/validate-sphinx@v2027
       if: |
         inputs.enable_sphinx_check && inputs.enable_rtd &&
-        matrix.python_version == '3.11' && runner.os == 'Linux' &&
+        matrix.python_version == '3.12' && runner.os == 'Linux' &&
         github.event_name == 'pull_request'
 
     - uses: actions/upload-artifact@v7
@@ -184,10 +184,10 @@ jobs:
       fail-fast: true
       matrix:
         python_version:
-        - '3.11'
         - '3.12'
         - '3.13'
         - '3.14'
+        - '3.15'
     container: python:${{ matrix.python_version }}-trixie
 
     steps:
@@ -347,7 +347,7 @@ jobs:
 
     - uses: actions/setup-python@v6
       with:
-        python-version: "3.11"
+        python-version: "3.12"
 
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
